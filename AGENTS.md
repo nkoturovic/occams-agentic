@@ -24,9 +24,15 @@ persistent knowledge, source material, capabilities, and workspace.
 │   ├── patterns/          ← Topic: proven reusable patterns
 │   ├── sources/           ← Topic: source summaries
 │   └── comparisons/       ← Topic: comparisons
+├── plans/                 ← Kanban task management
+│   ├── backlog/           ← Ideas, not yet actionable
+│   ├── active/            ← Currently in progress
+│   └── done/              ← Completed with outcome
 ├── repos/                 ← Cloned git repos (outside vault)
+├── scripts/               ← Universal CLI tools
 ├── scratch/               ← Ephemeral agent workspace (no persistence)
-└── skills/                ← Tool-agnostic ecosystem skills
+├── skills/                ← Tool-agnostic ecosystem skills
+└── conventions/           ← Framework conventions documentation
 ```
 
 ## Three-Layer Architecture (Karpathy LLM-Wiki)
@@ -85,15 +91,47 @@ to the project's needs.
 - **`[ref: path]`** for source citations in wiki pages
 - **`## [YYYY-MM-DD] op | Title`** for log entries
 
-## Tool-Specific Config
+## Kanban Task Management
 
-Tool-specific configuration lives outside `~/.agents/`:
+Plans live at `~/.agents/plans/` — a filesystem-native task manager.
 
-- OpenCode: `~/.config/opencode/AGENTS.md` (tool schema + references this file)
-- Claude Code: `~/.claude/CLAUDE.md` (can `@~/.agents/AGENTS.md`)
-- Each tool has its own config directory per XDG conventions
+- **backlog/** — Ideas, not yet actionable. Minimal: title + goal.
+- **active/** — Currently being worked on. Full spec required.
+- **done/** — Completed. Contains outcome summary.
 
-OpenCode-specific instructions are in `~/.config/opencode/AGENTS.md`; OpenCode
-uses XDG config paths and does not use `~/.opencode/config/AGENTS.md`. This
-file is also listed in `~/.config/opencode/opencode.json` under `instructions`
-so OpenCode loads the tool-agnostic system schema automatically.
+**Plan file format:** `YYYY-MM-DD_slug.md` with sections: Goal, Scope, Acceptance Criteria, Tasks, Review Checklist, Outcome.
+
+**Agent protocol:** At session start, check `active/` for in-progress work. When idle, pick next item from `backlog/`. On completion, move to `done/` with Outcome filled.
+
+**One plan per file.** Keep plans atomic and independent. Moving a file between directories changes its state.
+
+## Harness Integration
+
+This framework works with any AI agent harness that reads `AGENTS.md` files. The harness-specific
+configuration lives outside `~/.agents/`, following each tool's conventions:
+
+| Harness | Config location | How it discovers `~/.agents/` |
+|---------|----------------|-------------------------------|
+| OpenCode | `~/.config/opencode/AGENTS.md` | `instructions` in `opencode.json` |
+| Claude Code | `~/.claude/CLAUDE.md` | `@~/.agents/AGENTS.md` import |
+| Cursor | `.cursor/rules/` | Reference `~/.agents/AGENTS.md` in rules |
+| Codex | `AGENTS.md` (project root) | Walks up from cwd |
+| Any harness | Project `AGENTS.md` | Include: "Follow conventions in ~/.agents/AGENTS.md" |
+
+Harness-specific skills, scripts, and agent roles live in the harness config directory.
+Universal skills and scripts live here in `~/.agents/`. When both exist, the harness-specific
+version takes precedence (skill shadowing).
+
+## Autonomous Agent Integration
+
+Autonomous agents (scheduled, background, or general-purpose harnesses) can:
+1. Read `plans/active/` to find current work
+2. Read `plans/backlog/` to pick up new tasks
+3. Read `wiki/overview.md` for active project registry
+4. Write findings to `wiki/` following the Karpathy schema
+5. Move completed plans to `plans/done/`
+
+**Delegation principle:** Autonomous agents should not perform coding tasks directly.
+Instead, they delegate coding work to coding harnesses (OpenCode, Claude Code, etc.)
+via their integration APIs. The autonomous agent coordinates; the coding harness executes.
+Document harness integrations in `wiki/entities/` or project-specific wiki pages.

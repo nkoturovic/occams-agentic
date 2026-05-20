@@ -30,20 +30,19 @@ cd occams-agentic
 
 ## What You Get
 
-### Skills (9)
+### Skills (5)
 | Skill | Description |
 |-------|-------------|
 | `code-review` | Systematic code review with confidence-based filtering |
 | `pr-integration` | GitHub PR management via `gh` CLI |
 | `agent-browser` | Browser automation for AI agents |
-| `lecture-notes` | 9-phase lecture/talk → Obsidian notes pipeline |
 | `audio-analysis` | Speech-to-text via local whisper.cpp (Vulkan GPU) |
 | `video-analysis` | Video visual analysis via Gemini |
-| `simplify` | Code simplification without behavior changes |
-| `clonedeps` | Clone dependency source for inspection |
-| `codemap` | Generate hierarchical codebase maps |
 
-### Scripts (9)
+
+
+
+### Scripts (8)
 | Script | Description |
 |--------|-------------|
 | `analyze-video.py` | Multi-provider video analysis (Gemini/Kimi) |
@@ -53,8 +52,7 @@ cd occams-agentic
 | `lecture-clips.py` | Segment video clipping |
 | `wiki-lint.py` | Wiki structure validator |
 | `repo-ingest.py` | Repository content ingestion |
-| `detect-project-state.py` | Project state detection |
-| `project-init.py` | Project initialization |
+| `cleanup-logs.sh` | Log file cleanup utility |
 
 ### Wiki Template
 Karpathy-style LLM Wiki with 3-layer architecture:
