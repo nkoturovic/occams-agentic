@@ -23,7 +23,7 @@ Before installing, ensure these are available:
 | `gh` | PR integration skill | `gh --version` |
 
 Optional but recommended:
-- **API key** for video analysis (OpenRouter or Z.AI)
+- **API key** for video analysis (OpenRouter (for `analyze-video.py`))
 - **whisper.cpp** for transcription (via nix or local build)
 
 ## What Gets Installed
@@ -31,7 +31,7 @@ Optional but recommended:
 ```
 ~/.agents/
 ├── AGENTS.md              ← Framework instructions (read by any harness)
-├── skills/                ← 5 universal skills
+├── skills/                ← 6 universal skills
 ├── scripts/               ← 7 universal scripts
 ├── conventions/           ← Kanban, skill authoring guides
 ├── plans/                 ← Kanban directories (backlog, active, done)
