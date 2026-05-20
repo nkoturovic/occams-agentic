@@ -45,6 +45,10 @@ def parse_repo_ref(value: str) -> tuple[str, str]:
 
     if not owner or not repo:
         raise ValueError("Invalid repository reference")
+    # Prevent path traversal via crafted owner/repo names
+    for field_name, field_val in [("owner", owner), ("repo", repo)]:
+        if ".." in field_val or "/" in field_val or "\\" in field_val:
+            raise ValueError(f"Invalid {field_name} name: {field_val!r}")
     return owner, repo
 
 
