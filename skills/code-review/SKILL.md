@@ -1,6 +1,6 @@
 ---
 name: code-review
-description: Review code for bugs, security issues, and quality with confidence-based filtering. Use when user says "review this", "code review", "check for issues", "security audit", or after implementing a feature.
+description: Review code for bugs, security issues, and quality with confidence-based filtering. Use when user says "review this", "code review", "check for issues", "security audit", or after implementing a feature. Do not use for general architecture questions — that is a strategic advisory task, not a code review.
 ---
 
 # Code Review Skill

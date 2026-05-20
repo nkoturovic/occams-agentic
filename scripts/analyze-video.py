@@ -101,7 +101,7 @@ def analyze(model: str, video_path: Path, prompt: str) -> str:
         file=sys.stderr,
     )
 
-    with urllib.request.urlopen(req, timeout=120) as resp:
+    with urllib.request.urlopen(req, timeout=180) as resp:
         result = json.loads(resp.read().decode("utf-8"))
 
     return result["choices"][0]["message"]["content"]

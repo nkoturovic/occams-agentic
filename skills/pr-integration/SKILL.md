@@ -1,6 +1,6 @@
 ---
 name: pr-integration
-description: Create, manage, and review pull requests using GitHub CLI. Use when user says "create PR", "open PR", "push branch", "review PR", or after completing a feature.
+description: Create, manage, and review pull requests using GitHub CLI. Use when user says "create PR", "open PR", "push branch", "review PR", or after completing a feature. Do not use for general git operations (commit, branch, merge) — only for PR-specific GitHub interactions.
 ---
 
 # PR Integration Skill

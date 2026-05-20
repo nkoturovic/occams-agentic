@@ -36,8 +36,9 @@ description: <Trigger phrase. Use when the user needs X. NOT for Y.>
 ## YAML Frontmatter Rules
 
 - **`name`**: lowercase-hyphen identifier (e.g., `code-review`, `lecture-notes`)
-- **`description`**: Pushy and specific. Include positive triggers ("Use when...") and negative triggers ("NOT for..."). This is what the agent matches against user intent.
-- **No other fields required.** Keep frontmatter minimal.
+- **`description`**: Pushy and specific. Include positive triggers ("Use when...") and negative triggers ("NOT for..." or "Do not use for..."). This is what the agent matches against user intent. Every description should have at least one negative trigger to prevent mis-dispatch.
+- **`compatibility`** (optional): Prerequisites or platform requirements. Displayed to agents during skill loading. Keep it concise.
+- **No other fields.** Keep frontmatter minimal.
 
 ## Description Best Practices
 
