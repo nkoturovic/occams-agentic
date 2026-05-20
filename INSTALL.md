@@ -10,6 +10,8 @@ cd occams-agentic
 
 Done. The framework is now at `~/.agents/`.
 
+To preview without writing files: `./bin/bootstrap.sh --dry-run`
+
 ## Prerequisites
 
 Before installing, ensure these are available:
@@ -90,7 +92,7 @@ Follow ~/.agents/AGENTS.md for project structure and conventions.
 
 ## Uninstall
 
- occams-agentic is just files in `~/.agents/`. To remove:
+occams-agentic is just files in `~/.agents/`. To remove:
 
  ```bash
  rm -rf ~/.agents/skills ~/.agents/scripts ~/.agents/conventions ~/.agents/plans ~/.agents/.occams-agentic
