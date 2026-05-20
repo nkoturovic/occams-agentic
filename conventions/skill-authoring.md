@@ -56,15 +56,15 @@ The good example has:
 
 1. **Under 500 lines.** Condensed reference; deep docs go in wiki/raw/
 2. **Complete AST nodes.** Examples must be valid code, not fragments
-3. **Path references.** Use absolute paths `~/.agents/scripts/xxx` for universal scripts. Use `~/.config/opencode/scripts/xxx` for harness-specific scripts.
-4. **Harness-agnostic when possible.** Don't mention OpenCode-specific agents (@observer, @fixer) unless the skill is harness-specific.
+3. **Path references.** Use absolute paths `~/.agents/scripts/xxx` for universal scripts. Use `~/<harness-config>/scripts/xxx` for harness-specific scripts.
+4. **Harness-agnostic when possible.** Don't mention harness-specific agent roles (e.g., @observer, @fixer) unless the skill is harness-specific.
 5. **One skill per directory.** No subdirectories under the skill name.
 
 ## Discovery
 
 Agents discover skills by:
 1. Scanning `~/.agents/skills/**/SKILL.md` (universal)
-2. Scanning harness-specific directories (e.g., `~/.config/opencode/skills/`)
+2. Scanning harness-specific directories (e.g., `~/<harness-config>/skills/`)
 3. Matching user intent against `description` fields
 4. Loading the full SKILL.md into context on invocation
 
@@ -75,7 +75,7 @@ When the same skill name exists in both `~/.agents/skills/` and a harness-specif
 ## Testing a New Skill
 
 1. Create `skills/<name>/SKILL.md`
-2. Run your harness\'s skill debug command (e.g., `oc debug skill` for OpenCode)
+2. Run your harness\'s skill debug command (e.g., `<harness> debug skill` for your harness)
 3. Verify description appears in available skills
 4. Test invocation with a natural language trigger
 

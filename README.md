@@ -34,9 +34,9 @@ Scripts in this framework expect these tools on your PATH:
 
 | Tool | Required For | Install |
 |------|-------------|---------|
-| `ffmpeg` | `lecture-scenes.py`, `lecture-clips.py`, `transcribe` (video audio extraction) | `dnf install ffmpeg` or similar |
+| `ffmpeg` | `lecture-scenes.py`, `lecture-clips.py`, `lecture-fusion.py`, `transcribe` (video/audio processing) | `dnf install ffmpeg` or similar |
 | `gh` | `pr-integration` skill | `gh auth login` |
-| API key | `analyze-video.py` (video analysis) | OpenRouter or Z.AI |
+| API key | `analyze-video.py` (video analysis) | OpenRouter API key |
 | `whisper.cpp` | `transcribe` (speech-to-text) | Via nix flake or local build |
 
 ## What You Get
@@ -56,7 +56,7 @@ Scripts in this framework expect these tools on your PATH:
 ### Scripts (7)
 | Script | Description |
 |--------|-------------|
-| `analyze-video.py` | Multi-provider video analysis (Gemini/Kimi) |
+| `analyze-video.py` | OpenRouter → Gemini video analysis |
 | `transcribe` | Whisper.cpp wrapper with Vulkan GPU |
 | `lecture-scenes.py` | FFmpeg scene detection + keyframe extraction |
 | `lecture-fusion.py` | Audio-visual segment fusion |
