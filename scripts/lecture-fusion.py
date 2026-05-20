@@ -22,7 +22,7 @@ Key behaviors:
   Phase 2 scene-midpoint keyframes.
 """
 
-import argparse, json, re, shutil, subprocess, sys
+import argparse, json, re, shutil, subprocess, sys, tempfile
 from collections import defaultdict
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from pathlib import Path
@@ -37,13 +37,17 @@ def panic(msg): print(f"Error: {msg}", file=sys.stderr); sys.exit(1)
 
 def parse_srt(path):
     cues = []
-    with open(path) as f: txt = f.read()
+    # utf-8-sig strips BOM; normalize CRLF and bare CR to LF
+    with open(path, encoding="utf-8-sig") as f:
+        txt = f.read().replace("\r\n", "\n").replace("\r", "\n")
     for m in re.finditer(r'(\d+)\n(\d{2}):(\d{2}):(\d{2}),(\d+)\s*-->\s*'
                          r'(\d{2}):(\d{2}):(\d{2}),(\d+)\n((?:(?!\n\n).)*)', txt, re.DOTALL):
         start = int(m[2])*3600+int(m[3])*60+int(m[4])+int(m[5])/1000
         end   = int(m[6])*3600+int(m[7])*60+int(m[8])+int(m[9])/1000
         cues.append({"s": round(start,3), "e": round(end,3),
                       "t": m[10].replace('\n',' ').strip()})
+    if not cues:
+        print(f"Warning: no cues parsed from {path}", file=sys.stderr)
     return cues
 
 def excerpt(cues, t0, t1):
@@ -121,7 +125,7 @@ def main():
 
     # ── Phase B: Extract all candidates to temp dir ──
 
-    tmpdir = out.parent / "_tmp_fusion"; tmpdir.mkdir(parents=True, exist_ok=True)
+    tmpdir = Path(tempfile.mkdtemp(prefix="fusion_", dir=out.parent))
     total = sum(len(t["candidate_times"]) for t in tasks)
 
     candidates_by_canon = defaultdict(list)  # canonical_fn → [(tmp_path, sid)]
