@@ -23,7 +23,7 @@ Before installing, ensure these are available:
 | `gh` | PR integration skill | `gh --version` |
 
 Optional but recommended:
-- **API key** for video analysis (OpenRouter (for `analyze-video.py`))
+- **API key** for video analysis (OpenRouter, used by `analyze-video.py`)
 - **whisper.cpp** for transcription (via nix or local build)
 
 ## What Gets Installed
