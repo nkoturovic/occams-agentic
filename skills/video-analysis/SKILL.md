@@ -1,7 +1,7 @@
 ---
 name: video-analysis
 description: Analyze video files — describe visual content, extract text from screen recordings, identify UI elements and timing, summarize lectures. Use when the user has a video file (mp4, mov, webm, etc.) and wants to understand what happens in it, even if they don't explicitly ask for "analysis." Do not use for audio transcription or speech-to-text — that requires audio-analysis instead.
-compatibility: Requires OPENROUTER_API_KEY (already set in session).
+compatibility: Requires OPENROUTER_API_KEY (must be set in environment).
 ---
 
 # Video Analysis Skill

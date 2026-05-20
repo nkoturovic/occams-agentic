@@ -89,8 +89,8 @@ def analyze(model: str, video_path: Path, prompt: str) -> str:
     headers = {
         "Authorization": f"Bearer {api_key}",
         "Content-Type": "application/json",
-        "HTTP-Referer": "https://github.com/nkoturovic/occams-code",
-        "X-Title": "occams-code video analysis",
+        "HTTP-Referer": "https://github.com/nkoturovic/occams-agentic",
+        "X-Title": "occams-agentic video analysis",
     }
 
     req = urllib.request.Request(ENDPOINT, data=body, headers=headers)

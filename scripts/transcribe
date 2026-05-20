@@ -20,7 +20,7 @@ set -euo pipefail
 
 MODEL_DIR="${XDG_DATA_HOME:-$HOME/.local/share}/occams-agentic/models/whisper"
 MODEL="${MODEL_DIR}/ggml-large-v3-turbo.bin"
-FLAKE_LOCAL="$HOME/personal/repos/kotur-nixpkgs"
+FLAKE_LOCAL="${OCCAMS_NIXPKGS_LOCAL:-}"
 FLAKE_REMOTE="github:nkoturovic/kotur-nixpkgs"
 
 # ─── helpers ──────────────────────────────────────────────────────────────

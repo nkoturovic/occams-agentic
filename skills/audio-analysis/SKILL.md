@@ -44,15 +44,15 @@ Use the `~/.agents/scripts/transcribe` script — local whisper.cpp with Vulkan 
 
 ## Backend
 
-- **whisper.cpp** (C++, Vulkan GPU on AMD Radeon 860M + Zen 4 AVX-512 CPU)
+- **whisper.cpp** (C++, Vulkan GPU on your GPU + your CPU CPU)
 - Model: `ggml-large-v3-turbo` (1.6 GB, best Serbian accuracy among GGML models)
 - Model stored in `~/.local/share/occams-agentic/models/whisper/` (auto-downloaded if missing)
 - Built via nix from `github:nkoturovic/kotur-nixpkgs#whisper-cpp-vulkan`
 
 ## Performance
 
-- CPU only (Zen 4 AVX-512): ~0.5x realtime (64 min audio → ~32 min)
-- Vulkan GPU (AMD Radeon 860M, RADV): **~8x realtime** (64 min audio → ~8 min) — confirmed working via `VK_ICD_FILENAMES` and `LD_LIBRARY_PATH` env vars in the script
+- CPU only (your CPU): ~0.5x realtime (64 min audio → ~32 min)
+- Vulkan GPU (your GPU, RADV): **~8x realtime** (64 min audio → ~8 min) — confirmed working via `VK_ICD_FILENAMES` and `LD_LIBRARY_PATH` env vars in the script
 
 ## Formats Supported
 
