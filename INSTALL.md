@@ -82,6 +82,11 @@ Follow ~/.agents/AGENTS.md for project structure and conventions.
 
 **Other harnesses:** Reference `~/.agents/AGENTS.md` in your harness's instruction file.
 
+**Codex:** Add to project `AGENTS.md`:
+```markdown
+Include ~/.agents/AGENTS.md for framework conventions and workspace structure.
+```
+
 ## Troubleshooting
 
 **bootstrap.sh not found:** Make sure you're in the occams-agentic repo directory.
