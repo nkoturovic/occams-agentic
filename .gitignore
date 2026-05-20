@@ -1,0 +1,23 @@
+# User data (created by bootstrap, never tracked)
+wiki/
+repos/
+scratch/
+plans/
+.agents/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Editor files
+*.swp
+*.swo
+*~
+
+# Python cache
+__pycache__/
+*.pyc
+.ruff_cache/
+
+# Node
+node_modules/
