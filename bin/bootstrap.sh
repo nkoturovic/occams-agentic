@@ -113,6 +113,7 @@ done
 
 # Scripts (preserve executable bits)
 for script in "$REPO_ROOT/scripts"/*; do
+  [[ -f "$script" ]] || continue
   script_name="$(basename "$script")"
   copy_framework "$script" "$AGENTS_HOME/scripts/$script_name" "scripts/$script_name"
   if [[ "$DRY_RUN" == "false" ]] && [[ -x "$script" ]]; then
@@ -140,12 +141,13 @@ if [[ ! -f "$AGENTS_HOME/wiki/index.md" ]]; then
       mkdir -p "$AGENTS_HOME/wiki/raw/$dir"
     done
     # Create repos symlink (raw/repos → ../../repos)
-    ln -sfn "$AGENTS_HOME/repos" "$AGENTS_HOME/wiki/raw/repos"
+    ln -sfn ../../repos "$AGENTS_HOME/wiki/raw/repos"
     echo "  Wiki template installed"
     # Initialize wiki as git repo if not already
     if [[ ! -d "$AGENTS_HOME/wiki/.git" ]]; then
+      old_pwd="$PWD"
       cd "$AGENTS_HOME/wiki" && git init --quiet
-      cd "$OLDPWD"
+      cd "$old_pwd"
       echo "  Wiki initialized as git repo"
     fi
   else
@@ -167,7 +169,7 @@ if [[ "$DRY_RUN" == "false" ]]; then
   "files": {
     "agents_md": "$(sha256sum "$AGENTS_HOME/AGENTS.md" | cut -d' ' -f1)",
     "skills": $(ls "$AGENTS_HOME/skills" | wc -l),
-    "scripts": $(ls "$AGENTS_HOME/scripts" | wc -l)
+    "scripts": $(find "$AGENTS_HOME/scripts" -maxdepth 1 -type f | wc -l)
   }
 }
 MANIFEST_EOF

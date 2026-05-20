@@ -2,7 +2,7 @@
 
 ## Design Principle
 
-The filesystem kanban (`~/.agents/plans/`) and agent harness todo systems (OpenCode auto-continue, Claude Code tasks, etc.) are **complementary**, not competing.
+The filesystem kanban (`~/.agents/plans/`) and harness-managed todo/continuation systems are **complementary**, not competing.
 
 **Filesystem kanban** = durable planning layer. Plans survive sessions, are readable by any agent, and persist across days.
 **Harness todos** = execution layer. In-session tasks that agents work through sequentially.
@@ -38,9 +38,9 @@ When all tasks in a plan are complete:
 - Fill in Outcome section
 - Session todos are naturally completed
 
-### 4. Auto-Continue Integration
+### 4. Continuation Integration
 
-Agent harnesses with auto-continuation (e.g., oh-my-opencode-slim `/auto-continue`):
+Agent harnesses with automatic continuation or resumable task execution:
 
 - Before creating new todos: check `plans/active/`
 - After completing todos: update the active plan file (mark tasks done)
@@ -65,7 +65,7 @@ The filesystem IS the bridge. This is the Occam's Razor approach.
 3. Agent: Moves plan to active/
 4. Agent: Creates session todos from plan Tasks
 5. Agent: Executes todos, updates plan file with - [x] markers
-6. Auto-continue: picks up next todo from plan
+6. Harness continuation picks up next todo from plan
 7. All done: moves plan to done/, fills Outcome
 ```
 

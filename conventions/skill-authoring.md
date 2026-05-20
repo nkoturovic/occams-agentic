@@ -57,7 +57,7 @@ The good example has:
 1. **Aim for under 500 lines.** Complex multi-phase workflows (e.g., lecture-notes) may exceed this with clear justification. Condensed reference; deep docs go in wiki/raw/
 2. **Complete AST nodes.** Examples must be valid code, not fragments
 3. **Path references.** Use absolute paths `~/.agents/scripts/xxx` for universal scripts. Use `~/<harness-config>/scripts/xxx` for harness-specific scripts.
-4. **Harness-agnostic when possible.** Don't mention harness-specific agent roles (e.g., @observer, @fixer) unless the skill is harness-specific.
+4. **Harness-agnostic when possible.** Don't mention harness-specific agent role names unless the skill is harness-specific.
 5. **One skill per directory.** No subdirectories under the skill name.
 
 ## Discovery
