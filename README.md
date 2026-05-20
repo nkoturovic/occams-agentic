@@ -41,7 +41,7 @@ Scripts in this framework expect these tools on your PATH:
 
 ## What You Get
 
-### Skills (6)
+### Skills (5)
 | Skill | Description |
 |-------|-------------|
 | `code-review` | Systematic code review with confidence-based filtering |
@@ -49,12 +49,11 @@ Scripts in this framework expect these tools on your PATH:
 | `agent-browser` | Browser automation for AI agents |
 | `audio-analysis` | Speech-to-text via local whisper.cpp (Vulkan GPU) |
 | `video-analysis` | Video visual analysis via Gemini |
-| `lecture-notes` | 9-phase lecture/talk → Obsidian notes pipeline |
 
 
 
 
-### Scripts (8)
+### Scripts (7)
 | Script | Description |
 |--------|-------------|
 | `analyze-video.py` | Multi-provider video analysis (Gemini/Kimi) |
@@ -64,7 +63,6 @@ Scripts in this framework expect these tools on your PATH:
 | `lecture-clips.py` | Segment video clipping |
 | `wiki-lint.py` | Wiki structure validator |
 | `repo-ingest.py` | Repository content ingestion |
-| `cleanup-logs.sh` | Log file cleanup utility |
 
 ### Wiki Template
 Karpathy-style LLM Wiki with 3-layer architecture:

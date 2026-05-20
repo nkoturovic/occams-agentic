@@ -2,44 +2,31 @@
 
 Master routing table. Agent: read this first to find relevant pages.
 
-**Architecture:** raw/ → compiled wiki pages (one-way compile). See [[raw/README]] for source discipline.
+**Architecture:** raw/ → wiki/ (one-way compile). See [[raw/README]] for source discipline.
 
 ## Overview
 - [[overview]] — High-level synthesis of the entire wiki: themes, active projects, knowledge gaps
 
 ## Projects
-<!-- Add per-project pages here as you initialize them with `oc --init-project` -->
-<!-- Example: [[my-project]] — Brief description -->
+(Add per-project pages here as you initialize projects)
 
 ## Domain Knowledge
-(none yet — cross-project facts will accumulate here)
+(Cross-project facts will accumulate here)
 
 ## Language Conventions
-<!-- Add language-specific convention pages as you create them -->
-<!-- Example: [[cpp]] — C++ conventions and best practices -->
+(Add language pages as needed)
 
 ## Proven Patterns
-<!-- Add pattern pages as you discover reusable solutions -->
-<!-- Example: [[my-pattern]] — Brief description -->
+(Reusable patterns will accumulate here)
 
 ## Concepts
-- [[karpathy-llm-wiki]] — Karpathy's LLM Wiki pattern: wiki beats RAG for personal knowledge management
-- [[occams-code-setup]] — Architecture: two-config system, presets, agents, fallback, council, skills, scripts
-- [[agent-roles-and-models]] — Per-agent design rationale, delegation strategy, model selection, temperature/MCP
-- [[oc-launcher]] — Boot sequence, session modes, permissions
-- [[troubleshooting]] — Common failure modes, diagnostic commands, known-bad models
-- [[design-systems]] — DESIGN.md files: plain-text design systems for pixel-perfect AI-generated UI
-- [[vision-integration]] — Non-text content handling: images, PDFs, video, audio via @observer plus skills/scripts
+(Architectural concepts will accumulate here)
 
 ## Entities
-(none yet — add entity pages for people, orgs, tools you use)
+(People, orgs, tools)
 
 ## Source Summaries
-(none yet — auto-populated by `oc --ingest-repo` and manual ingestion)
+(Summaries of ingested sources)
 
 ## Raw Sources
-- [[raw/README]] — Immutable source materials (articles, repos, docs, papers). Wiki compiles from here.
-- Raw subfolders: `articles/`, `papers/`, `repos/`, `docs/`, `forums/`, `assets/`, `user/`, `session-reports/`, `_inbox/`
-
-## Comparisons
-(none yet — add comparison pages when analyzing alternatives)
+- [[raw/README]] — Immutable source materials. Wiki compiles from here.

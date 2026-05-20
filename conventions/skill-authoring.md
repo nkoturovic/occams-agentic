@@ -75,7 +75,7 @@ When the same skill name exists in both `~/.agents/skills/` and a harness-specif
 ## Testing a New Skill
 
 1. Create `skills/<name>/SKILL.md`
-2. Run `oc debug skill` (OpenCode) or check agent skill list
+2. Run your harness\'s skill debug command (e.g., `oc debug skill` for OpenCode)
 3. Verify description appears in available skills
 4. Test invocation with a natural language trigger
 

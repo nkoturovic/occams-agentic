@@ -6,7 +6,7 @@
 # Outputs SRT by default; pass whisper-cli flags for other formats.
 #
 # whisper.cpp is built via nix from kotur-nixpkgs (local clone or GitHub).
-# Model: ggml-large-v3-turbo (1.6 GB, auto-downloaded if missing, cached in ~/.local/share/opencode/models/whisper/).
+# Model: ggml-large-v3-turbo (1.6 GB, auto-downloaded if missing, cached in ~/.local/share/occams-agentic/models/whisper/).
 #
 # Usage:
 #   transcribe lecture.mp4                                    # auto lang, SRT
@@ -18,7 +18,7 @@
 
 set -euo pipefail
 
-MODEL_DIR="${XDG_DATA_HOME:-$HOME/.local/share}/opencode/models/whisper"
+MODEL_DIR="${XDG_DATA_HOME:-$HOME/.local/share}/occams-agentic/models/whisper"
 MODEL="${MODEL_DIR}/ggml-large-v3-turbo.bin"
 FLAKE_LOCAL="$HOME/personal/repos/kotur-nixpkgs"
 FLAKE_REMOTE="github:nkoturovic/kotur-nixpkgs"
@@ -105,7 +105,7 @@ if $SKIP_NEXT; then die "--output-dir requires a directory path"; fi
 if [[ -n "$OUTPUT_DIR" ]]; then mkdir -p "$OUTPUT_DIR"; fi
 
 if is_video "$INPUT"; then
-    TMP_WAV="$(mktemp /tmp/opencode-transcribe-XXXXXX.wav)"
+    TMP_WAV="$(mktemp /tmp/occams-agentic-transcribe-XXXXXX.wav)"
     trap 'rm -f "$TMP_WAV"' EXIT
     echo "Extracting audio from: ${INPUT} ..." >&2
     ffmpeg -y -v error -i "$INPUT" -vn -acodec pcm_s16le -ar 16000 -ac 1 "$TMP_WAV"

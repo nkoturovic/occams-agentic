@@ -46,7 +46,7 @@ Use the `~/.agents/scripts/transcribe` script — local whisper.cpp with Vulkan 
 
 - **whisper.cpp** (C++, Vulkan GPU on AMD Radeon 860M + Zen 4 AVX-512 CPU)
 - Model: `ggml-large-v3-turbo` (1.6 GB, best Serbian accuracy among GGML models)
-- Model stored in `~/.local/share/opencode/models/whisper/` (auto-downloaded if missing)
+- Model stored in `~/.local/share/occams-agentic/models/whisper/` (auto-downloaded if missing)
 - Built via nix from `github:nkoturovic/kotur-nixpkgs#whisper-cpp-vulkan`
 
 ## Performance

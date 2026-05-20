@@ -72,8 +72,8 @@ transcribe lecture.mp4 --language sr
 # Pass 2: Scout with Gemini on sparse keyframes (one cheap call)
 mkdir -p keyframes
 ffmpeg -i lecture.mp4 -vf "fps=1/30" -q:v 5 keyframes/frame_%04d.jpg
-# → @observer reads every Nth keyframe, reports slide boundaries + topics
+# → vision-capable agent reads every Nth keyframe, reports slide boundaries + topics
 
-# Pass 3: Detailed OCR on slide frames (free, via @observer Read tool)
-# @observer reads keyframes at identified boundaries, extracts text + LaTeX math
+# Pass 3: Detailed OCR on slide frames (free, via vision-capable agent Read tool)
+# vision-capable agent reads keyframes at identified boundaries, extracts text + LaTeX math
 ```
