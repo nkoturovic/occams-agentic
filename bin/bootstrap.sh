@@ -139,7 +139,19 @@ if [[ ! -f "$AGENTS_HOME/wiki/index.md" ]]; then
     for dir in articles docs papers user; do
       mkdir -p "$AGENTS_HOME/wiki/raw/$dir"
     done
+    # Create repos symlink (raw/repos → ../../repos)
+    ln -sfn "$AGENTS_HOME/repos" "$AGENTS_HOME/wiki/raw/repos"
     echo "  Wiki template installed"
+  fi
+  # Initialize wiki as git repo if not already
+  if [[ ! -d "$AGENTS_HOME/wiki/.git" ]]; then
+    if [[ "$DRY_RUN" == "false" ]]; then
+      cd "$AGENTS_HOME/wiki" && git init --quiet
+      cd "$OLDPWD"
+      echo "  Wiki initialized as git repo"
+    fi
+  else
+    echo "  Wiki already a git repo"
   else
     echo "  WOULD INSTALL wiki template"
   fi

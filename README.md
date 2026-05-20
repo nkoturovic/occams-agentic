@@ -28,6 +28,17 @@ cd occams-agentic
 ./bin/bootstrap.sh
 ```
 
+## Prerequisites
+
+Scripts in this framework expect these tools on your PATH:
+
+| Tool | Required For | Install |
+|------|-------------|---------|
+| `ffmpeg` | `lecture-scenes.py`, `lecture-clips.py`, `transcribe` (video audio extraction) | `dnf install ffmpeg` or similar |
+| `gh` | `pr-integration` skill | `gh auth login` |
+| API key | `analyze-video.py` (video analysis) | OpenRouter or Z.AI |
+| `whisper.cpp` | `transcribe` (speech-to-text) | Via nix flake or local build |
+
 ## What You Get
 
 ### Skills (5)

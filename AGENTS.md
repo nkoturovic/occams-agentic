@@ -115,8 +115,8 @@ configuration lives outside `~/.agents/`, following each tool's conventions:
 | OpenCode | `~/.config/opencode/AGENTS.md` | `instructions` in `opencode.json` |
 | Claude Code | `~/.claude/CLAUDE.md` | `@~/.agents/AGENTS.md` import |
 | Cursor | `.cursor/rules/` | Reference `~/.agents/AGENTS.md` in rules |
-| Codex | `AGENTS.md` (project root) | Walks up from cwd |
-| Any harness | Project `AGENTS.md` | Include: "Follow conventions in ~/.agents/AGENTS.md" |
+| Codex | `AGENTS.md` (project root) | Explicitly include `~/.agents/AGENTS.md` in project AGENTS.md |
+| Any harness | Project `AGENTS.md` | Reference `~/.agents/AGENTS.md` in project instructions |
 
 Harness-specific skills, scripts, and agent roles live in the harness config directory.
 Universal skills and scripts live here in `~/.agents/`. When both exist, the harness-specific

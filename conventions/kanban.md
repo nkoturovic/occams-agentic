@@ -50,4 +50,17 @@ Each plan is a markdown file with structured sections:
 
 ## Agent Integration
 
-Agents discover plans by reading the kanban directory structure. No special tooling required — the filesystem IS the task manager.
+All agents (coding, autonomous, general-purpose) use the kanban by reading the directory structure.
+No special tooling required — the filesystem IS the task manager.
+
+**Coding agents** should:
+1. Check `active/` for work-in-progress at session start
+2. Create plan files in `backlog/` before starting large tasks
+3. Move plans to `active/` when starting, to `done/` when complete
+4. Update plan files with progress markers (`- [x]` for completed tasks)
+
+**Autonomous agents** (scheduled, background):
+1. Poll `backlog/` periodically for new work
+2. Read `active/` for context on current work
+3. Execute tasks and update plan files
+4. Move completed plans to `done/` with outcome
