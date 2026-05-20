@@ -41,7 +41,7 @@ Scripts in this framework expect these tools on your PATH:
 
 ## What You Get
 
-### Skills (5)
+### Skills (6)
 | Skill | Description |
 |-------|-------------|
 | `code-review` | Systematic code review with confidence-based filtering |
@@ -49,6 +49,7 @@ Scripts in this framework expect these tools on your PATH:
 | `agent-browser` | Browser automation for AI agents |
 | `audio-analysis` | Speech-to-text via local whisper.cpp (Vulkan GPU) |
 | `video-analysis` | Video visual analysis via Gemini |
+| `lecture-notes` | 9-phase lecture/talk → Obsidian notes pipeline |
 
 
 
