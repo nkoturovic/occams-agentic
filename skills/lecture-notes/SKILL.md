@@ -280,7 +280,7 @@ Extracts per-section video clips for Phase 6 scouting. Run from output directory
 - `clip_status`: `"ok"` | `"re_encoded"` | `"oversize"` | `"error"` | `"no_visual"`
 
 Phase 6 reads `clip_status` per segment:
-- `"ok"` or `"re_encoded"` → send video clip to observer
+- `"ok"` or `"re_encoded"` → send video clip to the vision-capable agent
 - `"oversize"`, `"error"`, or `"no_visual"` → fall back to keyframe-only analysis
 
 **Stream-copy note:** ffmpeg `-c copy` seeks to the nearest keyframe before `start_seconds`.
@@ -296,7 +296,7 @@ keyframe JPEG + video clip (no dedup needed — every section has unique time ra
 
 If `clip_status` is `oversize` or `error`: video is missing. This should not happen — Phase 5 gate ensures every visual section has a clip. For `no_visual` (talking-head): legitimate skip. In these rare cases: keyframe-only emergency fallback.
 
-**Per-segment observer prompt construction:** For each segment, build the prompt by:
+**Per-segment vision prompt construction:** For each segment, build the prompt by:
 1. Always send the keyframe JPEG via Read tool — use the `keyframe` path from `segments.json` (canonical source). Do NOT use `segments_analyzed.json` (orchestrator-constructed, may have stale paths).
 2. Send the video clip via \`python3 ~/.agents/scripts/analyze-video.py <clip> "<PROMPT>"\` (temporal progression + audio for speaker_emphasis). Keyframe + video are complementary — keyframe catches full-res detail low-FPS video may miss; video captures movement and audio the still can't convey.
 3. If \`clip_status\` is \`no_visual\` (talking-head segment): keyframe-only — legitimate design path. Audio-derived fields (`speaker_added`, `speaker_emphasis`) are not expected.
@@ -374,7 +374,7 @@ Template:
 > Add your analysis fields alongside them.
 
 
-**Output:** `segments_analyzed.json`. Orchestrator wraps single-segment observer outputs:
+**Output:** `segments_analyzed.json`. Orchestrator wraps single-segment vision-agent outputs:
 ```json
 { "video": "video.mp4", "total_segments": N, "segments": [...] }
 ```
@@ -531,7 +531,7 @@ Plain text carries the core content; callouts highlight notable moments.
 
 ### Connection Synthesis
 
-After drafting all sections, review `segments_analyzed.json` for `connection_type` values across sections. Write `> [!info]` connection callouts that show how sections build on each other (title in lecture language). The orchestrator has full context — identify narrative arcs, prerequisite chains, and thematic groupings the observer (single-segment) could not see.
+After drafting all sections, review `segments_analyzed.json` for `connection_type` values across sections. Write `> [!info]` connection callouts that show how sections build on each other (title in lecture language). The orchestrator has full context — identify narrative arcs, prerequisite chains, and thematic groupings the single-segment vision analysis could not see.
 
 ### Post-composition checklist
 
