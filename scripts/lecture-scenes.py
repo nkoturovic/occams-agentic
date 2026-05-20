@@ -191,7 +191,7 @@ def main():
 
     if failed:
         print(f"Warning: {len(failed)} keyframe extraction(s) failed: scenes {failed}", file=sys.stderr)
-        sys.exit(1)
+        print(f"Continuing with {len(best) - len(failed)}/{len(best)} keyframes.", file=sys.stderr)
 
     print(f"Done → {od/json_name}", file=sys.stderr)
 

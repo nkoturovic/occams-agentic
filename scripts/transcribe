@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# transcribe — speech-to-text using whisper.cpp with Vulkan GPU (local)
+# transcribe — speech-to-text using whisper.cpp (local, GPU-accelerated)
 #
 # Converts speech in audio/video files to text with timestamps.
 # Videos are auto-extracted to 16kHz mono WAV before transcription.
@@ -8,9 +8,13 @@
 # whisper.cpp is built via nix from kotur-nixpkgs (local clone or GitHub).
 # Model: ggml-large-v3-turbo (1.6 GB, auto-downloaded if missing, cached in ~/.local/share/occams-agentic/models/whisper/).
 #
+# GPU backends:
+#   Linux: Vulkan (auto-detects AMD/NVIDIA/Intel ICD). Override via VK_ICD_FILENAMES.
+#   macOS: CoreML/Metal (whisper.cpp uses it automatically).
+#
 # Usage:
 #   transcribe lecture.mp4                                    # auto lang, SRT
-#   transcribe lecture.mp4 --language sr                      # Serbian
+#   transcribe lecture.mp4 --language de                      # German
 #   transcribe audio.wav -otxt -of /tmp/notes                 # plain text
 #   transcribe podcast.mp3 --language en --no-timestamps      # no timestamps
 #   transcribe video.mp4 --output-srt --output-file ./out     # named output
@@ -44,7 +48,7 @@ if [[ $# -lt 1 ]]; then
     echo "" >&2
     echo "Examples:" >&2
     echo "  $0 lecture.mp4                     # auto language, SRT" >&2
-    echo "  $0 lecture.mp4 --language sr       # Serbian" >&2
+    echo "  $0 lecture.mp4 --language de       # German" >&2
     echo "  $0 audio.wav -otxt -of /tmp/out    # plain text" >&2
     echo "  $0 video.mp4 --output-dir ./out    # SRT in directory" >&2
     exit 1
@@ -112,14 +116,28 @@ if is_video "$INPUT"; then
     INPUT="$TMP_WAV"
 fi
 
-# ─── GPU env (RADV Vulkan) ────────────────────────────────────────────────
-
-export VK_ICD_FILENAMES="${VK_ICD_FILENAMES:-/usr/share/vulkan/icd.d/radeon_icd.x86_64.json}"
-export LD_LIBRARY_PATH="/run/opengl-driver/lib:/usr/lib64${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}"
+# ─── GPU env (platform-aware) ──────────────────────────────────────────────
+# Vulkan GPU acceleration (Linux only). macOS uses CoreML via whisper.cpp automatically.
+# Override defaults via VK_ICD_FILENAMES env var.
+if [[ "$(uname -s)" == "Linux" ]]; then
+    # Try common Vulkan ICD paths; user override via env var takes precedence
+    if [[ -z "${VK_ICD_FILENAMES:-}" ]]; then
+        for icd in \
+            /usr/share/vulkan/icd.d/radeon_icd.x86_64.json \
+            /usr/share/vulkan/icd.d/nvidia_icd.json \
+            /usr/share/vulkan/icd.d/intel_icd.x86_64.json; do
+            if [[ -f "$icd" ]]; then
+                export VK_ICD_FILENAMES="$icd"
+                break
+            fi
+        done
+    fi
+    export LD_LIBRARY_PATH="/run/opengl-driver/lib:/usr/lib64${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}"
+fi
 
 # ─── transcribe ───────────────────────────────────────────────────────────
 
-echo "Transcribing with whisper.cpp (Vulkan/CPU) ..." >&2
+echo "Transcribing with whisper.cpp ..." >&2
 
 # Build whisper.cpp args.  Output: alongside source video if --output-dir set, else CWD.
 WHISPER_ARGS=(-m "$MODEL" -f "$INPUT" --output-srt --print-progress)

@@ -1,7 +1,7 @@
 ---
 name: audio-analysis
 description: Transcribe speech to text from audio or video files — generate subtitles, extract lecture notes, convert podcasts or meetings to text. Use when the user has an audio/video file and wants a transcript, subtitles, or text version of spoken content, even if they don't say "transcribe." Do not use for visual video analysis — that requires video-analysis instead.
-compatibility: Requires nix and ffmpeg. Model auto-downloaded on first use.
+compatibility: Requires nix (Linux) or whisper.cpp build, and ffmpeg. Model auto-downloaded on first use.
 ---
 
 # Audio Analysis Skill
@@ -15,7 +15,7 @@ compatibility: Requires nix and ffmpeg. Model auto-downloaded on first use.
 
 ## How to Transcribe
 
-Use the `~/.agents/scripts/transcribe` script — local whisper.cpp with Vulkan GPU:
+Use the `~/.agents/scripts/transcribe` script — local whisper.cpp with GPU acceleration:
 
 ```bash
 # Basic — auto language detection, SRT output
@@ -25,7 +25,7 @@ Use the `~/.agents/scripts/transcribe` script — local whisper.cpp with Vulkan 
 ~/.agents/scripts/transcribe /path/to/lecture.mp4
 
 # Specific language (SRT output: ./lecture.srt)
-~/.agents/scripts/transcribe /path/to/lecture.mp4 --language sr
+~/.agents/scripts/transcribe /path/to/lecture.mp4 --language de
 
 # Plain text output (no timestamps), custom name
 ~/.agents/scripts/transcribe /path/to/audio.mp3 -otxt -of my-notes
@@ -39,20 +39,23 @@ Use the `~/.agents/scripts/transcribe` script — local whisper.cpp with Vulkan 
 ## What It Does
 
 1. If input is video → `ffmpeg` extracts 16kHz mono WAV audio
-2. `whisper-cli` (whisper.cpp, Vulkan GPU) transcribes speech to text
+2. `whisper-cli` (whisper.cpp, GPU-accelerated) transcribes speech to text
 3. By default, outputs SRT file with timestamps (or whatever format the flags request)
 
 ## Backend
 
-- **whisper.cpp** (C++, Vulkan GPU on your GPU + your CPU CPU)
-- Model: `ggml-large-v3-turbo` (1.6 GB, best Serbian accuracy among GGML models)
+- **whisper.cpp** (C++, GPU-accelerated)
+  - **Linux:** Vulkan GPU (auto-detects AMD, NVIDIA, Intel). Override via `VK_ICD_FILENAMES` env var.
+  - **macOS:** CoreML (Metal) — whisper.cpp uses it automatically. Alternatively, use [MacWhisper](https://goodsnooze.gumroad.com/l/macwhisper) CLI for native macOS experience.
+- Model: `ggml-large-v3-turbo` (1.6 GB, excellent multilingual accuracy)
 - Model stored in `~/.local/share/occams-agentic/models/whisper/` (auto-downloaded if missing)
-- Built via nix from `github:nkoturovic/kotur-nixpkgs#whisper-cpp-vulkan`
+- Built via nix from `github:nkoturovic/kotur-nixpkgs#whisper-cpp-vulkan` (Linux)
 
 ## Performance
 
-- CPU only (your CPU): ~0.5x realtime (64 min audio → ~32 min)
-- Vulkan GPU (your GPU, RADV): **~8x realtime** (64 min audio → ~8 min) — confirmed working via `VK_ICD_FILENAMES` and `LD_LIBRARY_PATH` env vars in the script
+- CPU only: ~0.5x realtime (64 min audio → ~32 min)
+- GPU-accelerated: **~8x realtime** (64 min audio → ~8 min) — varies by GPU
+- Performance varies by hardware. Override GPU backend via `VK_ICD_FILENAMES` (Linux).
 
 ## Formats Supported
 
@@ -61,6 +64,6 @@ Use the `~/.agents/scripts/transcribe` script — local whisper.cpp with Vulkan 
 
 ## Environment
 
-- `nix` (builds whisper.cpp)
+- `nix` (builds whisper.cpp on Linux)
 - `ffmpeg` (audio extraction from video)
 - Model auto-downloaded on first use

@@ -23,9 +23,9 @@ Zero dependencies — stdlib only.
 # Default: Gemini via OpenRouter (audio+visual, best for lectures/talks)
 python3 ~/.agents/scripts/analyze-video.py /tmp/video.mp4
 
-# Specific prompt (Serbian lecture, math content)
+# Specific prompt (lecture with visual content)
 python3 ~/.agents/scripts/analyze-video.py /tmp/video.mp4 \
-  "Describe all visible content: slide titles, text, math formulas (LaTeX), diagrams. Language: Serbian."
+  "Describe all visible content: slide titles, text, math formulas (LaTeX), diagrams. Respond in the language used in the video."
 
 # Specific model
 python3 ~/.agents/scripts/analyze-video.py -m google/gemini-3.1-pro-preview /tmp/video.mp4
@@ -58,7 +58,7 @@ Gemini via OpenRouter handles audio+visual in one call:
 
 ```bash
 python3 ~/.agents/scripts/analyze-video.py slide_chunk.mp4 \
-  "Describe all visible content and what the speaker says. Language: Serbian."
+  "Describe all visible content and what the speaker says."
 ```
 
 ### Long lectures (>20MB)
