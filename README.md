@@ -39,7 +39,7 @@ These tools must be on your PATH. No external API keys are required by default.
 | `gh` | `pr-integration` skill | `gh auth login` |
 | `whisper.cpp` | `transcribe` (speech-to-text) | Via nix flake or local build |
 
-> **No external API keys are required.** Most scripts run locally. The only optional external dependency is `analyze-video.py` (video fallback for harnesses without native video support). If needed, set `OPENROUTER_API_KEY` in `~/.config/secrets/env` — see [INSTALL.md](INSTALL.md) for setup.
+> **No external API keys are required by default.** All scripts run locally. If you use `analyze-video.py` (video fallback for harnesses without native video support), set `OPENROUTER_API_KEY` in `~/.config/secrets/env`. Other harness integrations (e.g., occams-code) may also store keys there — see their respective docs.
 
 ## What You Get
 
