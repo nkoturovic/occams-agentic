@@ -30,7 +30,7 @@ cd occams-agentic
 
 ## Prerequisites
 
-Scripts in this framework expect these tools on your PATH:
+These tools must be on your PATH. No external API keys are required by default.
 
 | Tool | Required For | Install |
 |------|-------------|---------|
@@ -39,10 +39,7 @@ Scripts in this framework expect these tools on your PATH:
 | `gh` | `pr-integration` skill | `gh auth login` |
 | `whisper.cpp` | `transcribe` (speech-to-text) | Via nix flake or local build |
 
-Optional:
-| Key | Script | Needed? |
-|-----|--------|---------|
-| `OPENROUTER_API_KEY` | `analyze-video.py` (video fallback) | Only if your harness doesn't support native video |
+> **No external API keys are required.** Most scripts run locally. The only optional external dependency is `analyze-video.py` (video fallback for harnesses without native video support). If needed, set `OPENROUTER_API_KEY` in `~/.config/secrets/env` — see [INSTALL.md](INSTALL.md) for setup.
 
 ## What You Get
 

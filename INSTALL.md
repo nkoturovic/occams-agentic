@@ -30,13 +30,11 @@ Optional but recommended:
 
 ### Optional API Keys
 
-The framework works without any external API keys — most scripts run locally, and models with native vision handle video analysis directly. One script has an optional external dependency:
+Most scripts run locally — no external API keys required. The only optional key is for `analyze-video.py` (video analysis fallback for harnesses without native video support):
 
-| Key | Script | Needed? |
-|-----|--------|---------|
-| `OPENROUTER_API_KEY` | `analyze-video.py` (video analysis fallback) | Only if you use script-based video analysis instead of native model vision |
+- `OPENROUTER_API_KEY` — only needed if you use script-based video analysis instead of native model vision
 
-To set up optional keys:
+To set up:
 ```bash
 mkdir -p ~/.config/secrets
 cp -n env.example ~/.config/secrets/env   # -n won't overwrite existing
