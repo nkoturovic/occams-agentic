@@ -104,13 +104,13 @@ Include ~/.agents/AGENTS.md for framework conventions and workspace structure.
 
 ### Starting a New Project
 
-occams-agentic auto-initializes project workspaces (AGENTS.md + .agents/ + wiki page) when you open a new folder. How it triggers depends on the harness:
+occams-agentic can initialize project workspaces (AGENTS.md + .agents/ + wiki page) when you open a real project. Temp/scratch/one-off folders are skipped unless you explicitly initialize them. How it triggers depends on the harness:
 
 | Harness | Auto-init? | How |
 |---------|-----------|-----|
-| **OpenCode** | ✅ Automatic | `oc` launcher runs init after preset selection |
-| **Claude Code** | ✅ Automatic | Agent reads global AGENTS.md → follows init instruction |
-| **Cursor** | ✅ Automatic | Agent reads global AGENTS.md via rules → follows init instruction |
+| **OpenCode** | ✅ Confirmed | `oc` launcher asks before init; smart defaults favor real projects and skip temp dirs |
+| **Claude Code** | ⚙️ Confirmed | Agent reads global AGENTS.md → asks before running init |
+| **Cursor** | ⚙️ Confirmed | Agent reads global AGENTS.md via rules → asks before running init |
 | **Codex** | ⚙️ Manual first time | No global instruction loading — run `python3 ~/.agents/scripts/project-init.py` |
 
 For any harness, you can always manually initialize:

@@ -43,7 +43,7 @@ persistent knowledge, source material, capabilities, and workspace.
 
 ## Session Start Protocol
 
-1. **Project initialization:** If no `AGENTS.md` exists at the current project root (and cwd is not your home directory), run `python3 ~/.agents/scripts/project-init.py` to scaffold the project workspace. This is idempotent — safe to run if unsure.
+1. **Project initialization:** If no `AGENTS.md` exists at the current project root (and cwd is not your home directory), check whether this is a real project vs a temp/scratch/one-off directory. For real projects, ask the user before running `python3 ~/.agents/scripts/project-init.py` to scaffold the workspace. Skip initialization for temp/scratch/one-off directories unless explicitly requested. The `oc` launcher (OpenCode) handles this automatically with smart defaults — only override if you are certain.
 2. Read `wiki/index.md` to discover available knowledge
 3. Check `wiki/log.md` for recent activity
 4. Apply relevant context from wiki pages before starting any task
