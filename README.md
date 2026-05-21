@@ -54,9 +54,10 @@ Scripts in this framework expect these tools on your PATH:
 
 
 
-### Scripts (7)
+### Scripts (8)
 | Script | Description |
 |--------|-------------|
+| `project-init.py` | Project workspace scaffolding: AGENTS.md + `.agents/` + wiki page |
 | `analyze-video.py` | OpenRouter → Gemini video analysis |
 | `transcribe` | Whisper.cpp wrapper with Vulkan GPU |
 | `lecture-scenes.py` | FFmpeg scene detection + keyframe extraction |

@@ -83,8 +83,8 @@ def project_agents_md(slug: str, project_name: str) -> str:
 
     Only contains project-specific paths and context. No duplicated content
     from global AGENTS.md (session protocol, kanban rules) — the harness
-    loads both independently. No harness-specific content (agent roles,
-    MCPs, presets) — that's handled by each harness's own config layer.
+    loads both independently. No harness-specific content — each harness
+    handles its own integration layer.
     """
     return f"""# {project_name}
 

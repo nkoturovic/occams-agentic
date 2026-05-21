@@ -34,7 +34,7 @@ Optional but recommended:
 ~/.agents/
 ├── AGENTS.md              ← Framework instructions (read by any harness)
 ├── skills/                ← 6 universal skills
-├── scripts/               ← 7 universal scripts
+├── scripts/               ← 8 universal scripts
 ├── conventions/           ← Kanban, skill authoring guides
 ├── plans/                 ← Kanban directories (backlog, active, done)
 ├── wiki/                  ← Wiki template (if not existing)
