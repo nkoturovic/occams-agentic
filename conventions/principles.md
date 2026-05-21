@@ -51,7 +51,7 @@ Strong success criteria enable independent execution. Weak criteria require cons
 
 - After examining evidence, commit to a single explanation. Do not re-analyze unless new information contradicts your conclusion.
 - When comparing options: state your recommendation first, justify second.
-- Uncertainty after investigation → escalate with evidence, not开放式 questions.
+- Uncertainty after investigation → escalate with evidence, not open-ended questions.
 - Indecision costs more than a slightly wrong choice followed by quick correction.
 
 ## 6. Anti-Loop Rule

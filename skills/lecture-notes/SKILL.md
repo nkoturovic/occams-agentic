@@ -299,7 +299,7 @@ If `clip_status` is `oversize` or `error`: video is missing. This should not hap
 
 **Per-segment vision prompt construction:** For each segment, build the prompt by:
 1. Always send the keyframe JPEG via Read tool — use the `keyframe` path from `segments.json` (canonical source). Do NOT use `segments_analyzed.json` (orchestrator-constructed, may have stale paths).
-2. Send the video clip via \`python3 ~/.agents/scripts/analyze-video.py <clip> "<PROMPT>"\` (temporal progression + audio for speaker_emphasis). Keyframe + video are complementary — keyframe catches full-res detail low-FPS video may miss; video captures movement and audio the still can't convey.
+2. For video clip analysis: if harness Read supports video natively, use it directly. Otherwise, send via \`python3 ~/.agents/scripts/analyze-video.py <clip> "<PROMPT>"\` (temporal progression + audio for speaker_emphasis). Keyframe + video are complementary — keyframe catches full-res detail low-FPS video may miss; video captures movement and audio the still can't convey.
 3. If \`clip_status\` is \`no_visual\` (talking-head segment): keyframe-only — legitimate design path. Audio-derived fields (`speaker_added`, `speaker_emphasis`) are not expected.
 4. If \`clip_status\` is \`oversize\` or \`error\`: keyframe-only emergency fallback. This should not happen — Phase 5 gate ensures every visual section has a clip.
 5. Injecting \`[START_TIME]\` and \`[END_TIME]\` — use \`start_time\` and \`end_time\` (HH:MM:SS format) from the segment's \`section\` fields
