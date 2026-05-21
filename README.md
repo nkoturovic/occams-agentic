@@ -74,10 +74,12 @@ Karpathy-style LLM Wiki with 3-layer architecture:
 3. **AGENTS.md** — Schema for maintaining the wiki
 
 ### Kanban Task Management
-Filesystem-native task management at `~/.agents/plans/`:
+Filesystem-native task management at `~/.agents/plans/` — one global queue for all projects:
 - `backlog/` — Ideas, not yet actionable
 - `active/` — Currently in progress
 - `done/` — Completed with outcome
+
+Project-scoped plans use `project:` and `project_path:` frontmatter so external agents can route work without scanning every project directory.
 
 ## Directory Structure
 

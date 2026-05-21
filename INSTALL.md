@@ -37,7 +37,7 @@ Optional but recommended:
 ├── skills/                ← 6 universal skills
 ├── scripts/               ← 8 universal scripts
 ├── conventions/           ← Kanban, skill authoring guides
-├── plans/                 ← Kanban directories (backlog, active, done)
+├── plans/                 ← Global kanban queue (backlog, active, done)
 ├── wiki/                  ← Wiki template (if not existing)
 └── .occams-agentic/
     └── manifest.json      ← Installation tracking

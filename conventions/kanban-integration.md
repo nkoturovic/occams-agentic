@@ -4,6 +4,10 @@
 
 The filesystem kanban (`~/.agents/plans/`) and harness-managed todo/continuation systems are **complementary**, not competing.
 
+`~/.agents/plans/` is the single canonical queue. Project-scoped work is
+routed with `project:` and `project_path:` frontmatter instead of creating
+separate per-project kanban queues by default.
+
 **Filesystem kanban** = durable planning layer. Plans survive sessions, are readable by any agent, and persist across days.
 **Harness todos** = execution layer. In-session tasks that agents work through sequentially.
 
@@ -11,12 +15,16 @@ The filesystem kanban (`~/.agents/plans/`) and harness-managed todo/continuation
 
 ### 1. Session Start: Read Active Plans
 
-Agents check `~/.agents/plans/active/` before creating new todos. If active plans exist, incorporate them into the session's todo list.
+Agents check `~/.agents/plans/active/` before creating new todos. If active
+plans exist, incorporate relevant ones into the session's todo list. When
+inside a project, prefer active plans whose `project_path:` matches the current
+project or whose `project:` matches the global project wiki slug.
 
 ```
 Agent session starts:
   → Read ~/.agents/plans/active/
-  → Load active plans into session context
+  → Filter by project metadata when in a project
+  → Load relevant active plans into session context
   → Create todos from plan Tasks sections
   → Execute sequentially
   → Update plan file as tasks complete
@@ -27,6 +35,7 @@ Agent session starts:
 Large tasks should start as plan files, not session todos:
 
 - Create plan in `plans/backlog/` with Goal, Scope, Acceptance Criteria
+- Add `project:` and `project_path:` frontmatter for project-scoped work
 - When starting work: move to `plans/active/`
 - Agent session reads the active plan, creates execution todos
 
@@ -57,11 +66,21 @@ Integration is **convention-only**:
 
 The filesystem IS the bridge. This is the Occam's Razor approach.
 
+## Project Discovery for External Agents
+
+External/background agents should:
+
+1. Read `~/.agents/plans/active/` first, then `backlog/`
+2. For each plan, read `project:` and `project_path:` frontmatter
+3. If project-scoped, load `~/.agents/wiki/projects/<project>.md`
+4. If available, load `<project_path>/.agents/wiki/index.md`
+5. Execute through a coding harness; do not code directly from an autonomous agent
+
 ## Example Workflow
 
 ```
 1. User: "Refactor the auth module"
-2. Agent: Creates plan in plans/backlog/2026-05-20_refactor-auth.md
+2. Agent: Creates plan in plans/backlog/2026-05-20_refactor-auth.md with project metadata
 3. Agent: Moves plan to active/
 4. Agent: Creates session todos from plan Tasks
 5. Agent: Executes todos, updates plan file with - [x] markers

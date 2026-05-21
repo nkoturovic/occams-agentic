@@ -9,11 +9,22 @@
 └── done/          ← Completed. Contains outcome summary.
 ```
 
+This is the **canonical queue for all projects**. Project-local work is routed
+with plan metadata, not by creating separate per-project queues by default.
+External/background agents only need to poll one filesystem location.
+
 ## Plan File Format
 
 Each plan is a markdown file with structured sections:
 
 ```markdown
+---
+project: my-project        # project slug, or "global" for framework/cross-project work
+project_path: /path/to/project
+status: backlog            # backlog | active | done
+priority: medium           # high | medium | low
+---
+
 # Plan: <title>
 
 ## Goal
@@ -44,6 +55,7 @@ Each plan is a markdown file with structured sections:
 
 - **File naming:** `YYYY-MM-DD_slug.md` (e.g., `2026-05-20_add-kanban.md`)
 - **Moving plans:** Move file between directories to change state
+- **Project routing:** Set `project:` and `project_path:` in frontmatter for project-scoped work
 - **Agent protocol:** At session start, check `active/` for in-progress work, then `backlog/` for next items
 - **Completion:** Move to `done/` with Outcome section filled
 - **One plan per file:** Keep plans atomic and independent
@@ -60,7 +72,8 @@ No special tooling required — the filesystem IS the task manager.
 4. Update plan files with progress markers (`- [x]` for completed tasks)
 
 **Autonomous agents** (scheduled, background):
-1. Poll `backlog/` periodically for new work
-2. Read `active/` for context on current work
-3. Execute tasks and update plan files
-4. Move completed plans to `done/` with outcome
+1. Poll global `~/.agents/plans/active/` and `backlog/`
+2. Use `project:` / `project_path:` to route work to the right project
+3. Read `~/.agents/wiki/projects/<project>.md` and `<project_path>/.agents/wiki/index.md` for context
+4. Execute tasks and update plan files
+5. Move completed plans to `done/` with outcome

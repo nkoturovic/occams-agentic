@@ -102,6 +102,8 @@ Plans live at `~/.agents/plans/` — a filesystem-native task manager.
 
 **Plan file format:** `YYYY-MM-DD_slug.md` with sections: Goal, Scope, Acceptance Criteria, Tasks, Review Checklist, Outcome.
 
+Project-scoped plans use frontmatter: `project: <slug>`, `project_path: <absolute path>`, `status: backlog|active|done`, `priority: high|medium|low`.
+
 **Agent protocol:** At session start, check `active/` for in-progress work. When idle, pick next item from `backlog/`. On completion, move to `done/` with Outcome filled.
 
 **One plan per file.** Keep plans atomic and independent. Moving a file between directories changes its state.
@@ -128,9 +130,10 @@ version takes precedence (skill shadowing).
 Autonomous agents (scheduled, background, or general-purpose harnesses) can:
 1. Read `plans/active/` to find current work
 2. Read `plans/backlog/` to pick up new tasks
-3. Read `wiki/overview.md` for active project registry
-4. Write findings to `wiki/` following the Karpathy schema
-5. Move completed plans to `plans/done/`
+3. Use plan `project:` / `project_path:` metadata to navigate to project context
+4. Read `wiki/overview.md` and `wiki/projects/<project>.md` for active project registry/context
+5. Write findings to `wiki/` following the Karpathy schema
+6. Move completed plans to `plans/done/`
 
 **Delegation principle:** Autonomous agents should not perform coding tasks directly.
 Instead, they delegate coding work to coding harnesses (OpenCode, Claude Code, etc.)
