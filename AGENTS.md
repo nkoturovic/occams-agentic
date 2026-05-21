@@ -43,10 +43,11 @@ persistent knowledge, source material, capabilities, and workspace.
 
 ## Session Start Protocol
 
-1. Read `wiki/index.md` to discover available knowledge
-2. Check `wiki/log.md` for recent activity
-3. Apply relevant context from wiki pages before starting any task
-4. When maintaining wiki, read `wiki/AGENTS.md` for conventions
+1. **Project initialization:** If no `AGENTS.md` exists at the current project root (and cwd is not your home directory), run `python3 ~/.agents/scripts/project-init.py` to scaffold the project workspace. This is idempotent — safe to run if unsure.
+2. Read `wiki/index.md` to discover available knowledge
+3. Check `wiki/log.md` for recent activity
+4. Apply relevant context from wiki pages before starting any task
+5. When maintaining wiki, read `wiki/AGENTS.md` for conventions
 
 ## Skill Shadowing
 
