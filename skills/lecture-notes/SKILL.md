@@ -12,8 +12,9 @@ description: >
   — that requires audio-analysis instead.
 compatibility: >
   Requires: transcribe (whisper.cpp local), ffmpeg, lecture-scenes.py, lecture-fusion.py,
-  lecture-clips.py, OPENROUTER_API_KEY (vision LLM via OpenRouter). Output is
-  Obsidian-flavored markdown using wikilinks, callouts, LaTeX, Media Extended #t= timestamps.
+  lecture-clips.py. For vision phases: native model vision (preferred) or OPENROUTER_API_KEY
+  for analyze-video.py fallback. Output is Obsidian-flavored markdown using wikilinks,
+  callouts, LaTeX, Media Extended #t= timestamps.
 ---
 
 # Lecture Notes Pipeline
