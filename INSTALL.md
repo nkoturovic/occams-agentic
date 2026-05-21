@@ -104,7 +104,7 @@ Include ~/.agents/AGENTS.md for framework conventions and workspace structure.
 
 ### Starting a New Project
 
-occams-agentic can initialize project workspaces (AGENTS.md + .agents/ + wiki page) when you open a real project. Temp/scratch/one-off folders are skipped unless you explicitly initialize them. How it triggers depends on the harness:
+occams-agentic can initialize project workspaces (AGENTS.md + .agents/ + wiki page) when you open a real project. Obvious temp/scratch folders are skipped unless you explicitly initialize them. How it triggers depends on the harness:
 
 | Harness | Auto-init? | How |
 |---------|-----------|-----|
