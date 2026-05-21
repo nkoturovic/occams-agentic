@@ -87,6 +87,22 @@ Follow ~/.agents/AGENTS.md for project structure and conventions.
 Include ~/.agents/AGENTS.md for framework conventions and workspace structure.
 ```
 
+### Starting a New Project
+
+occams-agentic auto-initializes project workspaces (AGENTS.md + .agents/ + wiki page) when you open a new folder. How it triggers depends on the harness:
+
+| Harness | Auto-init? | How |
+|---------|-----------|-----|
+| **OpenCode** | ✅ Automatic | `oc` launcher runs init after preset selection |
+| **Claude Code** | ✅ Automatic | Agent reads global AGENTS.md → follows init instruction |
+| **Cursor** | ✅ Automatic | Agent reads global AGENTS.md via rules → follows init instruction |
+| **Codex** | ⚙️ Manual first time | No global instruction loading — run `python3 ~/.agents/scripts/project-init.py` |
+
+For any harness, you can always manually initialize:
+```bash
+python3 ~/.agents/scripts/project-init.py
+```
+
 ## Troubleshooting
 
 **bootstrap.sh not found:** Make sure you're in the occams-agentic repo directory.
