@@ -31,6 +31,9 @@ done
 
 echo "occams-agentic v${VERSION} bootstrap"
 echo "Target: $AGENTS_HOME"
+if [[ "$UPDATE" == "true" ]]; then
+  echo "Mode: update (install already updates existing files)"
+fi
 
 # --- Safety checks ---
 if [[ ! -d "$REPO_ROOT/skills" ]]; then
@@ -105,6 +108,9 @@ for skill_dir in "$REPO_ROOT/skills"/*/; do
   if [[ -d "$skill_dir" ]]; then
     echo "  SKILL: $skill_name"
     if [[ "$DRY_RUN" == "false" ]]; then
+      if [[ -d "$AGENTS_HOME/skills/$skill_name" ]]; then
+        rm -rf "$AGENTS_HOME/skills/$skill_name"
+      fi
       mkdir -p "$AGENTS_HOME/skills/$skill_name"
       cp -r "$skill_dir"* "$AGENTS_HOME/skills/$skill_name/"
     fi
