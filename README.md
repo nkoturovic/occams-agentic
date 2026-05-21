@@ -74,7 +74,7 @@ Optional:
 ### Conventions (4)
 | Convention | Description |
 |------------|-------------|
-| `principles` | Behavioral rules for all agents (think first, simplicity, surgical changes, goal-driven) |
+| `principles` | Behavioral rules for all agents (think first, simplicity, surgical changes, commit to decisions, anti-loop) |
 | `kanban` | Filesystem-native task management workflow |
 | `kanban-integration` | How agents discover and execute kanban tasks |
 | `skill-authoring` | How to write and structure new skills |
