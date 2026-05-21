@@ -26,10 +26,19 @@ MODEL_DIR="${XDG_DATA_HOME:-$HOME/.local/share}/occams-agentic/models/whisper"
 MODEL="${MODEL_DIR}/ggml-large-v3-turbo.bin"
 FLAKE_LOCAL="${OCCAMS_NIXPKGS_LOCAL:-}"
 FLAKE_REMOTE="github:nkoturovic/kotur-nixpkgs"
+TMP_WAV=""
+TMP_MODEL=""
 
 # ─── helpers ──────────────────────────────────────────────────────────────
 
 die()  { echo "ERROR: $*" >&2; exit 1; }
+
+cleanup() {
+    [[ -n "${TMP_WAV:-}" ]] && rm -f "$TMP_WAV"
+    [[ -n "${TMP_MODEL:-}" ]] && rm -f "$TMP_MODEL"
+    return 0
+}
+trap cleanup EXIT
 
 is_video() {
     case "${1##*.}" in
@@ -78,9 +87,13 @@ fi
 if [[ ! -f "$MODEL" ]]; then
     echo "Downloading whisper model to ${MODEL_DIR} ..." >&2
     mkdir -p "$MODEL_DIR"
+    command -v wget &>/dev/null || die "wget not found — required to download whisper model"
+    TMP_MODEL="$(mktemp "${MODEL}.tmp.XXXXXX")"
     wget -q --show-progress \
         "https://huggingface.co/ggerganov/whisper.cpp/resolve/main/ggml-large-v3-turbo.bin" \
-        -O "$MODEL"
+        -O "$TMP_MODEL"
+    mv "$TMP_MODEL" "$MODEL"
+    TMP_MODEL=""
     echo "Downloaded: $(du -h "$MODEL" | cut -f1)" >&2
 fi
 
@@ -115,13 +128,12 @@ for arg in "$@"; do
     fi
     NEW_ARGS+=("$arg")
 done
-set -- "${NEW_ARGS[@]}"
+set -- ${NEW_ARGS[@]+"${NEW_ARGS[@]}"}
 if $SKIP_NEXT; then die "--output-dir requires a directory path"; fi
 if [[ -n "$OUTPUT_DIR" ]]; then mkdir -p "$OUTPUT_DIR"; fi
 
 if is_video "$INPUT"; then
     TMP_WAV="$(mktemp /tmp/occams-agentic-transcribe-XXXXXX.wav)"
-    trap 'rm -f "$TMP_WAV"' EXIT
     echo "Extracting audio from: ${INPUT} ..." >&2
     ffmpeg -y -v error -i "$INPUT" -vn -acodec pcm_s16le -ar 16000 -ac 1 "$TMP_WAV"
     INPUT="$TMP_WAV"
@@ -152,7 +164,13 @@ echo "Transcribing with whisper.cpp ..." >&2
 
 # Build whisper.cpp args.  Output: alongside source video if --output-dir set, else CWD.
 WHISPER_ARGS=(-m "$MODEL" -f "$INPUT" --output-srt --print-progress)
-if [[ ! " $* " =~ \ (-of|--output-file)\  ]]; then
+HAS_OUTPUT_FILE=false
+for arg in "$@"; do
+    case "$arg" in
+        -of|--output-file|-of=*|--output-file=*) HAS_OUTPUT_FILE=true ;;
+    esac
+done
+if [[ "$HAS_OUTPUT_FILE" == "false" ]]; then
     if [[ -n "$OUTPUT_DIR" ]]; then
         WHISPER_ARGS+=(-of "$OUTPUT_DIR/$ORIGINAL_NAME")
     else
@@ -162,7 +180,9 @@ fi
 
 # Execute with available whisper-cli
 if [[ "$HAS_NIX" == "true" ]]; then
-    exec nix run "${FLAKE}#whisper-cpp-vulkan" -- "${WHISPER_ARGS[@]}" "$@"
+    nix run "${FLAKE}#whisper-cpp-vulkan" -- "${WHISPER_ARGS[@]}" "$@"
+    exit $?
 elif [[ "$HAS_WHISPER_CLI" == "true" ]]; then
-    exec whisper-cli "${WHISPER_ARGS[@]}" "$@"
+    whisper-cli "${WHISPER_ARGS[@]}" "$@"
+    exit $?
 fi

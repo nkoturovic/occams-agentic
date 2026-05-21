@@ -38,6 +38,7 @@ MIME_MAP = {
     ".mpg":  "mpg",
     ".webm": "webm",
     ".wmv":  "wmv",
+    ".mkv":  "x-matroska",
     ".3gpp": "3gpp",
     ".3gp":  "3gpp",
 }
@@ -104,7 +105,24 @@ def analyze(model: str, video_path: Path, prompt: str) -> str:
     with urllib.request.urlopen(req, timeout=180) as resp:
         result = json.loads(resp.read().decode("utf-8"))
 
-    return result["choices"][0]["message"]["content"]
+    if "error" in result:
+        error = result["error"]
+        if isinstance(error, dict):
+            message = error.get("message") or json.dumps(error)
+        else:
+            message = str(error)
+        raise RuntimeError(f"API error: {message}")
+
+    choices = result.get("choices")
+    if not isinstance(choices, list) or not choices:
+        raise RuntimeError(f"API response missing choices: {json.dumps(result)[:500]}")
+
+    message = choices[0].get("message") if isinstance(choices[0], dict) else None
+    content = message.get("content") if isinstance(message, dict) else None
+    if not content:
+        raise RuntimeError(f"API response missing message content: {json.dumps(result)[:500]}")
+
+    return content
 
 
 # ---------------------------------------------------------------------------
@@ -144,6 +162,12 @@ def main() -> None:
         sys.exit(f"API error ({e.code}): {body[:500]}")
     except urllib.error.URLError as e:
         sys.exit(f"Network error: {e.reason}")
+    except TimeoutError:
+        sys.exit("Network error: request timed out")
+    except OSError as e:
+        sys.exit(f"Network error: {e}")
+    except RuntimeError as e:
+        sys.exit(str(e))
 
 
 if __name__ == "__main__":

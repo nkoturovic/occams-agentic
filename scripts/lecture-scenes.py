@@ -15,13 +15,15 @@ registers as scene changes. Preserves meaningful content boundaries while
 eliminating noise.
 
 Output: scenes.json + keyframes/frame_NNN.jpg (3-digit zero-padded).
+Env: OCCAMS_KEYFRAME_TIMEOUT seconds per keyframe extraction (default 900, 0 disables).
 """
 
-import argparse, json, re, statistics, subprocess, sys
+import argparse, json, os, re, statistics, subprocess, sys
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from pathlib import Path
 
 MIN_DEDUP_GAP = 3.0  # seconds — prevents presentation-switch transients
+KEYFRAME_TIMEOUT = float(os.environ.get("OCCAMS_KEYFRAME_TIMEOUT", "900"))
 
 def panic(msg): print(f"Error: {msg}", file=sys.stderr); sys.exit(1)
 
@@ -136,7 +138,7 @@ def main():
 
     if not best or len(best) < 6:
         print(f"  → fallback periodic sampling (count fail)", file=sys.stderr)
-        best = periodic(dur); best_thresh = "fallback"; retries = 0; passed = False
+        best = periodic(dur); best_thresh = None; retries = 0; passed = False
     elif passed:
         rs = "retry" if retries == 1 else "retries"
         print(f"  → accepted at {best_thresh:.2f}" + (f" after {retries} {rs}" if retries else ""), file=sys.stderr)
@@ -145,7 +147,7 @@ def main():
         durs = [s["end_seconds"]-s["start_seconds"] for s in best]
         if max(durs) > dur/2:
             print(f"  → fallback periodic sampling (max scene {max(durs):.0f}s > {dur/2:.0f}s)", file=sys.stderr)
-            best = periodic(dur); best_thresh = "fallback"; retries = 0; passed = False
+            best = periodic(dur); best_thresh = None; retries = 0; passed = False
         else:
             print(f"  → best-effort at {best_thresh:.2f} (gate failed — {len(best)} scenes)", file=sys.stderr)
 
@@ -173,7 +175,8 @@ def main():
         fn = f"frame_{s['scene_id']:0{a.digits}d}.jpg"
         path = str(kd/fn); t = s["midpoint_seconds"]
         subprocess.run(["ffmpeg","-y","-v","error","-ss",str(t),"-i",str(vp),
-                        "-frames:v","1","-q:v","2",path], check=True)
+                        "-frames:v","1","-q:v","2",path], check=True,
+                       timeout=KEYFRAME_TIMEOUT if KEYFRAME_TIMEOUT > 0 else None)
         return s["scene_id"]
 
     with ThreadPoolExecutor(max_workers=4) as ex:
@@ -188,6 +191,10 @@ def main():
                 failed.append(sid)
                 print(f"  keyframe {i}/{len(best)} (scene {sid}) FAILED: {e.stderr.strip()[:120] if e.stderr else e}"
                       , file=sys.stderr)
+            except subprocess.TimeoutExpired:
+                sid = futs[f]["scene_id"]
+                failed.append(sid)
+                print(f"  keyframe {i}/{len(best)} (scene {sid}) FAILED: ffmpeg timed out", file=sys.stderr)
 
     if failed:
         print(f"Warning: {len(failed)} keyframe extraction(s) failed: scenes {failed}", file=sys.stderr)

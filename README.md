@@ -35,6 +35,7 @@ Scripts in this framework expect these tools on your PATH:
 | Tool | Required For | Install |
 |------|-------------|---------|
 | `ffmpeg` | `lecture-scenes.py`, `lecture-clips.py`, `lecture-fusion.py`, `transcribe` (video/audio processing) | `dnf install ffmpeg` or similar |
+| `wget` | `transcribe` (first model download) | `dnf install wget` or similar |
 | `gh` | `pr-integration` skill | `gh auth login` |
 | API key | `analyze-video.py` (video analysis) | OpenRouter API key |
 | `whisper.cpp` | `transcribe` (speech-to-text) | Via nix flake or local build |

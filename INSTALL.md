@@ -22,6 +22,7 @@ Before installing, ensure these are available:
 | `bash` | Running bootstrap | `bash --version` |
 | `python3` | Some scripts | `python3 --version` |
 | `ffmpeg` | Video/audio processing | `ffmpeg -version` |
+| `wget` | First whisper model download | `wget --version` |
 | `gh` | PR integration skill | `gh --version` |
 
 Optional but recommended:
