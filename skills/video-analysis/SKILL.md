@@ -1,7 +1,6 @@
 ---
 name: video-analysis
 description: Analyze video files — describe visual content, extract text from screen recordings, identify UI elements and timing, summarize lectures. Use when the user has a video file (mp4, mov, webm, etc.) and wants to understand what happens in it, even if they don't explicitly ask for "analysis." Do not use for audio transcription or speech-to-text — that requires audio-analysis instead.
-compatibility: Requires OPENROUTER_API_KEY (must be set in environment).
 ---
 
 # Video Analysis Skill
@@ -13,67 +12,66 @@ compatibility: Requires OPENROUTER_API_KEY (must be set in environment).
 - User needs text/video content extracted from a recording
 - User wants video analysis with audio track understanding (lectures, talks, etc.)
 
-## How to Analyze Video
+## Native-First Approach
 
-Use the `analyze-video.py` script. Single provider: **OpenRouter → Gemini**.
-Gemini processes both audio and visual streams (1fps sampling + 1Kbps audio).
-Zero dependencies — stdlib only.
+**If your harness's Read tool supports video (e.g., Claude Code with Gemini), use it directly.** This requires no external API keys and gives the best results.
+
+> **Note:** OpenCode's Read tool currently does not support video — use the script below.
+
+Fall back to the script when:
+- Your harness Read tool doesn't support video (e.g., OpenCode)
+- The file exceeds your model's native size limit
+- You need specific processing (keyframe extraction, batch analysis)
+
+## Script: analyze-video.py
+
+Fallback for models without native video support. Uses OpenRouter → Gemini.
+Accepts video files only (not keyframe images). Max 20MB per file.
 
 ```bash
-# Default: Gemini via OpenRouter (audio+visual, best for lectures/talks)
+# Default: Gemini via OpenRouter (audio+visual)
 python3 ~/.agents/scripts/analyze-video.py /tmp/video.mp4
 
-# Specific prompt (lecture with visual content)
+# Specific prompt
 python3 ~/.agents/scripts/analyze-video.py /tmp/video.mp4 \
-  "Describe all visible content: slide titles, text, math formulas (LaTeX), diagrams. Respond in the language used in the video."
+  "Describe all visible content: slide titles, text, math formulas (LaTeX), diagrams."
 
 # Specific model
 python3 ~/.agents/scripts/analyze-video.py -m google/gemini-3.1-pro-preview /tmp/video.mp4
 ```
 
-## Model
+### Requirements
 
-Default: `~google/gemini-pro-latest` — auto-upgrades to latest Gemini Pro (currently 3.1 Pro Preview). Override with `-m`.
-
-Supported formats: mp4, mpeg, mov, avi, flv, mpg, webm, wmv, 3gpp. Max 20MB inline.
-
-## Environment
-
-- `OPENROUTER_API_KEY` — already set in the session
-
-## Limitations
-
+- `OPENROUTER_API_KEY` environment variable must be set
 - Max file size: 20MB (inline base64)
-- Gemini: audio+visual, 1fps sampling, supports timestamps
+- Zero dependencies — stdlib only
 
-## Fallback
+### Supported Formats
 
-For small clips (≤8MB), `zai_vision` MCP `video_analysis` is available but lower quality (server-side pipeline, not model-native).
+mp4, mpeg, mov, avi, flv, mpg, webm, wmv, mkv, 3gpp
 
 ## Combined Audio+Video Pipeline
 
 ### Short clips (≤20MB)
 
-Gemini via OpenRouter handles audio+visual in one call:
+Gemini handles audio+visual in one call:
 
 ```bash
-python3 ~/.agents/scripts/analyze-video.py slide_chunk.mp4 \
+python3 ~/.agents/scripts/analyze-video.py clip.mp4 \
   "Describe all visible content and what the speaker says."
 ```
 
-### Long lectures (>20MB)
+### Long videos (>20MB)
 
-Two-pass approach — minimizes paid API calls:
+Two-pass approach:
 
 ```bash
-# Pass 1: Audio transcription (free, local)
-transcribe lecture.mp4 --language sr
+# Pass 1: Audio transcription (local, no API key needed)
+~/.agents/scripts/transcribe lecture.mp4 --language en
 
-# Pass 2: Scout with Gemini on sparse keyframes (one cheap call)
-mkdir -p keyframes
-ffmpeg -i lecture.mp4 -vf "fps=1/30" -q:v 5 keyframes/frame_%04d.jpg
-# → vision-capable agent reads every Nth keyframe, reports slide boundaries + topics
-
-# Pass 3: Detailed OCR on slide frames (free, via vision-capable agent Read tool)
-# vision-capable agent reads keyframes at identified boundaries, extracts text + LaTeX math
+# Pass 2: Keyframe extraction + visual analysis
+mkdir -p /tmp/keyframes
+ffmpeg -i lecture.mp4 -vf "fps=1/30" -q:v 5 /tmp/keyframes/frame_%04d.jpg
+# → Read keyframe images natively with your model's vision capability
+# → Or clip segments ≤20MB and use analyze-video.py on each
 ```

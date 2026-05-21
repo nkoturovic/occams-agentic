@@ -48,6 +48,17 @@ persistent knowledge, source material, capabilities, and workspace.
 3. Check `wiki/log.md` for recent activity
 4. Apply relevant context from wiki pages before starting any task
 5. When maintaining wiki, read `wiki/AGENTS.md` for conventions
+6. Follow behavioral principles from `conventions/principles.md`
+
+## Principles
+
+All agents must follow the behavioral principles in `conventions/principles.md`:
+1. Think Before Coding — surface assumptions, don't hide confusion
+2. Simplicity First — minimum code, nothing speculative
+3. Surgical Changes — touch only what you must
+4. Goal-Driven Execution — define success criteria, loop until verified
+5. Commit to Decisions — pick the most likely explanation, proceed
+6. Anti-Loop Rule — same failure twice, stop and report
 
 ## Skill Shadowing
 

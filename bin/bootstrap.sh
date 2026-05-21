@@ -177,6 +177,15 @@ MANIFEST_EOF
   echo "Manifest written to $MANIFEST_FILE"
 fi
 
+# --- Optional: remind about API keys ---
+if [[ ! -f "$HOME/.config/secrets/env" ]] && [[ -f "$REPO_ROOT/env.example" ]]; then
+  echo ""
+  echo "=== Optional: API Keys ==="
+  echo "Some scripts can use external APIs (e.g., analyze-video.py uses OpenRouter)."
+  echo "If needed: mkdir -p ~/.config/secrets && cp \"$REPO_ROOT/env.example\" ~/.config/secrets/env && chmod 600 ~/.config/secrets/env"
+  echo "See env.example for details. Native model capabilities work without keys."
+fi
+
 echo ""
 echo "=== Bootstrap complete ==="
 if [[ "$DRY_RUN" == "true" ]]; then

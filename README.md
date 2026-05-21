@@ -37,8 +37,12 @@ Scripts in this framework expect these tools on your PATH:
 | `ffmpeg` | `lecture-scenes.py`, `lecture-clips.py`, `lecture-fusion.py`, `transcribe` (video/audio processing) | `dnf install ffmpeg` or similar |
 | `wget` | `transcribe` (first model download) | `dnf install wget` or similar |
 | `gh` | `pr-integration` skill | `gh auth login` |
-| API key | `analyze-video.py` (video analysis) | OpenRouter API key |
 | `whisper.cpp` | `transcribe` (speech-to-text) | Via nix flake or local build |
+
+Optional:
+| Key | Script | Needed? |
+|-----|--------|---------|
+| `OPENROUTER_API_KEY` | `analyze-video.py` (video fallback) | Only if your harness doesn't support native video |
 
 ## What You Get
 
@@ -66,6 +70,14 @@ Scripts in this framework expect these tools on your PATH:
 | `lecture-clips.py` | Segment video clipping |
 | `wiki-lint.py` | Wiki structure validator |
 | `repo-ingest.py` | Repository content ingestion |
+
+### Conventions (4)
+| Convention | Description |
+|------------|-------------|
+| `principles` | Behavioral rules for all agents (think first, simplicity, surgical changes, goal-driven) |
+| `kanban` | Filesystem-native task management workflow |
+| `kanban-integration` | How agents discover and execute kanban tasks |
+| `skill-authoring` | How to write and structure new skills |
 
 ### Wiki Template
 Karpathy-style LLM Wiki with 3-layer architecture:

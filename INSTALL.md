@@ -26,8 +26,24 @@ Before installing, ensure these are available:
 | `gh` | PR integration skill | `gh --version` |
 
 Optional but recommended:
-- **API key** for video analysis (OpenRouter, used by `analyze-video.py`)
 - **whisper.cpp** for transcription (via nix or local build)
+
+### Optional API Keys
+
+The framework works without any external API keys — most scripts run locally, and models with native vision handle video analysis directly. One script has an optional external dependency:
+
+| Key | Script | Needed? |
+|-----|--------|---------|
+| `OPENROUTER_API_KEY` | `analyze-video.py` (video analysis fallback) | Only if you use script-based video analysis instead of native model vision |
+
+To set up optional keys:
+```bash
+mkdir -p ~/.config/secrets
+cp -n env.example ~/.config/secrets/env   # -n won't overwrite existing
+chmod 600 ~/.config/secrets/env
+# Edit ~/.config/secrets/env — uncomment and fill keys you need
+printf '\n[ -f "$HOME/.config/secrets/env" ] && . "$HOME/.config/secrets/env"\n' >> ~/.profile
+```
 
 ## What Gets Installed
 
@@ -36,7 +52,7 @@ Optional but recommended:
 ├── AGENTS.md              ← Framework instructions (read by any harness)
 ├── skills/                ← 6 universal skills
 ├── scripts/               ← 8 universal scripts
-├── conventions/           ← Kanban, skill authoring guides
+├── conventions/           ← Principles, kanban, skill authoring guides
 ├── plans/                 ← Global kanban queue (backlog, active, done)
 ├── wiki/                  ← Wiki template (if not existing)
 └── .occams-agentic/
