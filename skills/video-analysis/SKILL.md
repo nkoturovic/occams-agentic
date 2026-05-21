@@ -21,7 +21,7 @@ description: Analyze video files — describe visual content, extract text from 
 Fall back to the script when:
 - Your harness Read tool doesn't support video (e.g., OpenCode)
 - The file exceeds your model's native size limit
-- You need specific processing (keyframe extraction, batch analysis)
+- You need batch analysis of video segments
 
 ## Script: analyze-video.py
 
