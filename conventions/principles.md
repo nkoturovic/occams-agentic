@@ -4,7 +4,18 @@
 
 These principles apply to all agents across all harnesses.
 
-## 1. Think Before Coding
+## 1. Context First — Gather Before Acting
+
+**Ensure all relevant context is available locally before planning or executing.**
+
+- Clone source repos for inspection: shallow (`--depth 1`) for structure, deeper (`--depth 50+`) for history, blame, or PR context.
+- Download documentation and reference material for offline analysis when working with unfamiliar libraries, APIs, or systems.
+- Run parallel exploration and research before planning: codebase search + external docs + existing wiki knowledge.
+- For unfamiliar codebases, map the structure before diving into details.
+- Gather enough to make informed decisions — then plan. Do not start implementing on incomplete information.
+- After each task completion, reconsider: what additional context would improve the next step? Update plans and gather more if needed.
+
+## 2. Think Before Coding
 
 **Don't assume. Don't hide confusion. Surface tradeoffs.**
 
@@ -13,7 +24,7 @@ These principles apply to all agents across all harnesses.
 - Simpler approach exists → say so. Push back when warranted.
 - Something unclear → stop, name it, ask.
 
-## 2. Simplicity First
+## 3. Simplicity First
 
 **Minimum code that solves the problem. Nothing speculative.**
 
@@ -23,7 +34,7 @@ These principles apply to all agents across all harnesses.
 - If 200 lines could be 50, rewrite it.
 - Test: "Would a senior engineer say this is overcomplicated?" If yes, simplify.
 
-## 3. Surgical Changes
+## 4. Surgical Changes
 
 **Touch only what you must. Clean up only your own mess.**
 
@@ -34,7 +45,7 @@ These principles apply to all agents across all harnesses.
 - Your changes create orphans → remove them. Don't remove pre-existing dead code.
 - Test: Every changed line traces directly to the request.
 
-## 4. Goal-Driven Execution
+## 5. Goal-Driven Execution
 
 **Define success criteria. Loop until verified.**
 
@@ -45,7 +56,7 @@ These principles apply to all agents across all harnesses.
 
 Strong success criteria enable independent execution. Weak criteria require constant clarification.
 
-## 5. Commit to Decisions
+## 6. Commit to Decisions
 
 **Pick the most likely explanation and proceed.**
 
@@ -54,7 +65,7 @@ Strong success criteria enable independent execution. Weak criteria require cons
 - Uncertainty after investigation → escalate with evidence, not open-ended questions.
 - Indecision costs more than a slightly wrong choice followed by quick correction.
 
-## 6. Anti-Loop Rule
+## 7. Anti-Loop Rule
 
 **Same failure twice → stop and report.**
 
@@ -64,4 +75,4 @@ Strong success criteria enable independent execution. Weak criteria require cons
 
 ---
 
-**These principles are working if:** fewer unnecessary changes in diffs, fewer rewrites due to overcomplication, clarifying questions come before implementation rather than after mistakes.
+**These principles are working if:** agents gather context before planning (not after hitting walls), fewer unnecessary changes in diffs, fewer rewrites due to overcomplication, clarifying questions come before implementation rather than after mistakes.

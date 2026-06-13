@@ -68,12 +68,10 @@ These tools must be on your PATH. No external API keys are required by default.
 | `wiki-lint.py` | Wiki structure validator |
 | `repo-ingest.py` | Repository content ingestion |
 
-### Conventions (4)
+### Conventions (2)
 | Convention | Description |
 |------------|-------------|
-| `principles` | Behavioral rules for all agents (think first, simplicity, surgical changes, commit to decisions, anti-loop) |
-| `kanban` | Filesystem-native task management workflow |
-| `kanban-integration` | How agents discover and execute kanban tasks |
+| `principles` | Behavioral rules for all agents (context first, think before coding, simplicity, surgical changes, goal-driven, commit to decisions, anti-loop) |
 | `skill-authoring` | How to write and structure new skills |
 
 ### Wiki Template
@@ -82,13 +80,8 @@ Karpathy-style LLM Wiki with 3-layer architecture:
 2. **wiki/** — LLM-compiled knowledge
 3. **AGENTS.md** — Schema for maintaining the wiki
 
-### Kanban Task Management
-Filesystem-native task management at `~/.agents/plans/` — one global queue for all projects:
-- `backlog/` — Ideas, not yet actionable
-- `active/` — Currently in progress
-- `done/` — Completed with outcome
-
-Project-scoped plans use `project:` and `project_path:` frontmatter so external agents can route work without scanning every project directory.
+### Structured Execution
+For heavy, multi-phase, or risky tasks, use a structured execution pattern: persistent plans, review gates, and phased execution. Each harness may provide tools for this (OpenCode: DeepWork). Wiki project pages track task state across sessions using `## Backlog`, `## Active`, and `## Completed` sections.
 
 ## Directory Structure
 
@@ -99,7 +92,6 @@ Project-scoped plans use `project:` and `project_path:` frontmatter so external 
 ├── scripts/                      ← Universal scripts
 ├── conventions/                  ← Framework conventions
 ├── wiki/                         ← LLM Wiki (Obsidian vault)
-├── plans/                        ← Kanban task management
 ├── repos/                        ← Cloned reference repos
 └── scratch/                      ← Ephemeral workspace
 ```

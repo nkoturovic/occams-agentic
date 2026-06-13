@@ -50,8 +50,7 @@ printf '\n[ -f "$HOME/.config/secrets/env" ] && . "$HOME/.config/secrets/env"\n'
 ├── AGENTS.md              ← Framework instructions (read by any harness)
 ├── skills/                ← 6 universal skills
 ├── scripts/               ← 8 universal scripts
-├── conventions/           ← Principles, kanban, skill authoring guides
-├── plans/                 ← Global kanban queue (backlog, active, done)
+├── conventions/           ← Principles, skill authoring guide
 ├── wiki/                  ← Wiki template (if not existing)
 └── .occams-agentic/
     └── manifest.json      ← Installation tracking
@@ -131,6 +130,6 @@ python3 ~/.agents/scripts/project-init.py
 occams-agentic is just files in `~/.agents/`. To remove:
 
  ```bash
- rm -rf ~/.agents/skills ~/.agents/scripts ~/.agents/conventions ~/.agents/plans ~/.agents/.occams-agentic
+  rm -rf ~/.agents/skills ~/.agents/scripts ~/.agents/conventions ~/.agents/.occams-agentic
  # Keep ~/.agents/wiki/ and ~/.agents/repos/ if you want your data
  ```

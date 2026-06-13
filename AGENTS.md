@@ -24,10 +24,7 @@ persistent knowledge, source material, capabilities, and workspace.
 │   ├── patterns/          ← Topic: proven reusable patterns
 │   ├── sources/           ← Topic: source summaries
 │   └── comparisons/       ← Topic: comparisons
-├── plans/                 ← Kanban task management
-│   ├── backlog/           ← Ideas, not yet actionable
-│   ├── active/            ← Currently in progress
-│   └── done/              ← Completed with outcome
+├── plans/                 ← Optional task queue (no formal convention; use wiki + harness tools)
 ├── repos/                 ← Cloned git repos (outside vault)
 ├── scripts/               ← Universal CLI tools
 ├── scratch/               ← Ephemeral agent workspace (no persistence)
@@ -49,16 +46,18 @@ persistent knowledge, source material, capabilities, and workspace.
 4. Apply relevant context from wiki pages before starting any task
 5. When maintaining wiki, read `wiki/AGENTS.md` for conventions
 6. Follow behavioral principles from `conventions/principles.md`
+7. **Before any non-trivial task:** gather context locally — clone repos, download docs, run exploration. See Principle 1 (Context First).
 
 ## Principles
 
 All agents must follow the behavioral principles in `conventions/principles.md`:
-1. Think Before Coding — surface assumptions, don't hide confusion
-2. Simplicity First — minimum code, nothing speculative
-3. Surgical Changes — touch only what you must
-4. Goal-Driven Execution — define success criteria, loop until verified
-5. Commit to Decisions — pick the most likely explanation, proceed
-6. Anti-Loop Rule — same failure twice, stop and report
+1. Context First — gather context before planning or executing
+2. Think Before Coding — surface assumptions, don't hide confusion
+3. Simplicity First — minimum code, nothing speculative
+4. Surgical Changes — touch only what you must
+5. Goal-Driven Execution — define success criteria, loop until verified
+6. Commit to Decisions — pick the most likely explanation, proceed
+7. Anti-Loop Rule — same failure twice, stop and report
 
 ## Skill Shadowing
 
@@ -103,21 +102,22 @@ to the project's needs.
 - **`[ref: path]`** for source citations in wiki pages
 - **`## [YYYY-MM-DD] op | Title`** for log entries
 
-## Kanban Task Management
+## Structured Execution
 
-Plans live at `~/.agents/plans/` — a filesystem-native task manager.
+For heavy, multi-phase, or risky tasks, use a structured execution pattern:
 
-- **backlog/** — Ideas, not yet actionable. Minimal: title + goal.
-- **active/** — Currently being worked on. Full spec required.
-- **done/** — Completed. Contains outcome summary.
+1. **Gather context** — clone repos, download docs, explore codebase (Principle 1: Context First)
+2. **Create a persistent plan** — write it to a local file so it survives context limits and session restarts
+3. **Review before executing** — get the plan reviewed (by a review agent, peer, or careful self-review)
+4. **Execute in phases** — break work into verifiable phases with validation between each
+5. **Verify after each phase** — validate before proceeding to the next (Principle 5: Goal-Driven Execution)
+6. **Log completion** — record outcomes in wiki `log.md`
 
-**Plan file format:** `YYYY-MM-DD_slug.md` with sections: Goal, Scope, Acceptance Criteria, Tasks, Review Checklist, Outcome.
+Each harness may provide tools for this pattern:
+- **OpenCode:** DeepWork (`/deepwork <task>`) — persistent plan files with mandatory Oracle review gates at plan and phase boundaries, V2 background orchestration. See `~/.config/opencode/AGENTS.md`.
+- **Other harnesses:** Manual plan files with review prompts, or harness-native structured execution tools.
 
-Project-scoped plans use frontmatter: `project: <slug>`, `project_path: <absolute path>`, `status: backlog|active|done`, `priority: high|medium|low`.
-
-**Agent protocol:** At session start, check `active/` for in-progress work. When idle, pick next item from `backlog/`. On completion, move to `done/` with Outcome filled.
-
-**One plan per file.** Keep plans atomic and independent. Moving a file between directories changes its state.
+**Task tracking across sessions** uses wiki project pages. Add `## Backlog`, `## Active`, and `## Completed` sections to `wiki/projects/<project>.md` for lightweight task tracking that any agent or harness can read at session start.
 
 ## Harness Integration
 
@@ -136,17 +136,19 @@ Harness-specific skills, scripts, and agent roles live in the harness config dir
 Universal skills and scripts live here in `~/.agents/`. When both exist, the harness-specific
 version takes precedence (skill shadowing).
 
+Harness-specific structured execution tools (e.g., OpenCode's DeepWork) implement the
+"Structured Execution" pattern above. See each harness's config for concrete usage.
+
 ## Autonomous Agent Integration
 
 Autonomous agents (scheduled, background, or general-purpose harnesses) can:
-1. Read `plans/active/` to find current work
-2. Read `plans/backlog/` to pick up new tasks
-3. Use plan `project:` / `project_path:` metadata to navigate to project context
-4. Read `wiki/overview.md` and `wiki/projects/<project>.md` for active project registry/context
-5. Write findings to `wiki/` following the Karpathy schema
-6. Move completed plans to `plans/done/`
+1. Read `wiki/index.md` and `wiki/projects/<project>.md` for active project registry/context
+2. Check project wiki pages for `## Backlog` and `## Active` sections to find work
+3. Read `wiki/log.md` for recent activity and outcomes
+4. Write findings to `wiki/` following the Karpathy schema
+5. Delegate coding work to coding harnesses via their integration APIs
 
 **Delegation principle:** Autonomous agents should not perform coding tasks directly.
 Instead, they delegate coding work to coding harnesses (OpenCode, Claude Code, etc.)
-via their integration APIs. The autonomous agent coordinates; the coding harness executes.
+The autonomous agent coordinates; the coding harness executes.
 Document harness integrations in `wiki/entities/` or project-specific wiki pages.

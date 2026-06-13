@@ -3,11 +3,11 @@
 
 Gemini processes both audio and visual streams from video (1fps sampling +
 1Kbps audio). Default model: ~google/gemini-pro-latest (auto-upgrades to
-latest Gemini Pro — currently 3.1 Pro Preview). ≤20MB inline.
+latest Gemini Pro). ≤20MB inline.
 
 Usage:
   analyze-video.py <video_path> [prompt]
-  analyze-video.py -m google/gemini-3.1-pro-preview <video_path> [prompt]
+  analyze-video.py -m google/gemini-3.5-flash <video_path> [prompt]
 
 Zero dependencies — stdlib only. No openai SDK, no requests.
 """

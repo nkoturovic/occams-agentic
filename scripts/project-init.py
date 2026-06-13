@@ -6,7 +6,7 @@ AI coding harness that reads AGENTS.md files.
 
 Creates:
 - AGENTS.md at project root (if missing)
-- .agents/ workspace with wiki, repos, plans pointer, scratch, skills subdirs
+- .agents/ workspace with wiki, repos, scratch, skills subdirs
 - Global wiki project page + index entry + log entry
 - .gitignore entry for .agents/ (if in a git repo)
 """
@@ -60,7 +60,6 @@ confidence: medium
 
 - Path: `{project_path}`
 - Local workspace: `{project_path}/.agents/`
-- Kanban: `~/.agents/plans/` (`project: {slug}`, `project_path: {project_path}`)
 - Purpose: [fill in]
 
 ## Current Context
@@ -83,7 +82,7 @@ def project_agents_md(slug: str, project_name: str) -> str:
     """Generate a minimal project-local AGENTS.md.
 
     Only contains project-specific paths and context. No duplicated content
-    from global AGENTS.md (session protocol, kanban rules) — the harness
+    from global AGENTS.md (session protocol) — the harness
     loads both independently. No harness-specific content — each harness
     handles its own integration layer.
     """
@@ -92,8 +91,7 @@ def project_agents_md(slug: str, project_name: str) -> str:
 ## Project Paths
 
 - **Wiki page:** `~/.agents/wiki/projects/{slug}.md`
-- **Workspace:** `.agents/` (wiki/, repos/, plans/, scratch/, skills/)
-- **Kanban:** `~/.agents/plans/` (global queue; use `project: {slug}`)
+- **Workspace:** `.agents/` (wiki/, repos/, scratch/, skills/)
 - **Framework:** `~/.agents/AGENTS.md` (universal, always loaded by your harness)
 
 ## Project Context
@@ -132,7 +130,6 @@ This project-local wiki follows the same three-layer pattern as the global
 │       ├── papers/
 │       └── user/
 ├── repos/                 ← Cloned reference repos
-├── plans/                 ← Pointer to global ~/.agents/plans/ queue
 ├── scratch/               ← Ephemeral workspace
 └── skills/                ← Project-specific skills
 ```
@@ -140,7 +137,6 @@ This project-local wiki follows the same three-layer pattern as the global
 ## Global Conventions
 
 Follow the global framework conventions:
-- **Kanban:** `~/.agents/conventions/kanban.md` — filesystem-native task management
 - **Skill authoring:** `~/.agents/conventions/skill-authoring.md` — how to write SKILL.md files
 - **Wiki maintenance:** `~/.agents/wiki/AGENTS.md` — global wiki schema
 
@@ -150,12 +146,6 @@ Follow the global framework conventions:
 - **wiki/** — durable. Agent owns this layer. Write synthesized notes here.
 - **scratch/** — ephemeral. No persistence guarantees. Clean up after use.
 - **skills/** — project-specific SKILL.md files. Discovered by harness automatically.
-
-## Kanban Routing
-
-Tasks live in the global queue at `~/.agents/plans/`. Project-scoped plans use:
-- `project: {slug}`
-- `project_path: <this project path>`
 """
 
 
@@ -168,25 +158,6 @@ Immutable source material for this project's local wiki.
 - Put large cloned repos under `.agents/repos/` (available through
   `.agents/wiki/raw/repos/`).
 - Do not edit raw sources; write synthesized notes in `.agents/wiki/`.
-"""
-
-
-def project_plans_readme(slug: str, project_name: str, project_path: Path) -> str:
-    return f"""# {project_name} Plans
-
-Project tasks live in the global queue: `~/.agents/plans/`.
-
-Use this frontmatter for project-scoped plans:
-
-```yaml
-project: {slug}
-project_path: {project_path}
-status: backlog
-priority: medium
-```
-
-This directory is a pointer only. Do not create local backlog/active/done queues
-unless the human explicitly asks for a project-local kanban.
 """
 
 
@@ -224,7 +195,6 @@ def ensure_project_workspace(slug: str, project_name: str, project_path: Path) -
         raw / "session-reports",
         raw / "_inbox",
         repos,
-        root / "plans",
         root / "scratch",
         root / "skills",
     ):
@@ -248,7 +218,6 @@ def ensure_project_workspace(slug: str, project_name: str, project_path: Path) -
     ensure_file(wiki / "log.md", f"# {project_name} Local Log\n\n")
     ensure_file(wiki / "overview.md", f"# {project_name} Overview\n\n")
     ensure_file(raw / "README.md", project_raw_readme(project_name))
-    ensure_file(root / "plans" / "README.md", project_plans_readme(slug, project_name, project_path))
     return created
 
 
