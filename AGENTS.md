@@ -117,7 +117,7 @@ Each harness may provide tools for this pattern:
 - **OpenCode:** DeepWork (`/deepwork <task>`) — persistent plan files with mandatory Oracle review gates at plan and phase boundaries, V2 background orchestration. See `~/.config/opencode/AGENTS.md`.
 - **Other harnesses:** Manual plan files with review prompts, or harness-native structured execution tools.
 
-**Task tracking across sessions** uses wiki project pages. Add `## Backlog`, `## Active`, and `## Completed` sections to `wiki/projects/<project>.md` for lightweight task tracking that any agent or harness can read at session start.
+After completion, record outcomes in wiki `log.md` and promote durable findings to wiki concept/project pages.
 
 ## Harness Integration
 

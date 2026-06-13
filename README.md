@@ -81,7 +81,7 @@ Karpathy-style LLM Wiki with 3-layer architecture:
 3. **AGENTS.md** — Schema for maintaining the wiki
 
 ### Structured Execution
-For heavy, multi-phase, or risky tasks, use a structured execution pattern: persistent plans, review gates, and phased execution. Each harness may provide tools for this (OpenCode: DeepWork). Wiki project pages track task state across sessions using `## Backlog`, `## Active`, and `## Completed` sections.
+For heavy, multi-phase, or risky tasks, use a structured execution pattern: persistent plans, review gates, and phased execution. Each harness may provide tools for this (OpenCode: DeepWork). After completion, record outcomes in wiki `log.md` and promote durable findings to wiki concept/project pages.
 
 ## Directory Structure
 
