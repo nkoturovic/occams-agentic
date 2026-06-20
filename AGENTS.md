@@ -143,7 +143,7 @@ Harness-specific structured execution tools (e.g., OpenCode's DeepWork) implemen
 
 Autonomous agents (scheduled, background, or general-purpose harnesses) can:
 1. Read `wiki/index.md` and `wiki/projects/<project>.md` for active project registry/context
-2. Check project wiki pages for `## Backlog` and `## Active` sections to find work
+2. Check `wiki/log.md` for recent activity and `wiki/projects/<project>.md` for project context
 3. Read `wiki/log.md` for recent activity and outcomes
 4. Write findings to `wiki/` following the Karpathy schema
 5. Delegate coding work to coding harnesses via their integration APIs
