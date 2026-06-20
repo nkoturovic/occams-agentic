@@ -24,7 +24,6 @@ persistent knowledge, source material, capabilities, and workspace.
 │   ├── patterns/          ← Topic: proven reusable patterns
 │   ├── sources/           ← Topic: source summaries
 │   └── comparisons/       ← Topic: comparisons
-├── plans/                 ← Optional task queue (no formal convention; use wiki + harness tools)
 ├── repos/                 ← Cloned git repos (outside vault)
 ├── scripts/               ← Universal CLI tools
 ├── scratch/               ← Ephemeral agent workspace (no persistence)
