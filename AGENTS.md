@@ -56,7 +56,7 @@ All agents must follow the behavioral principles in `conventions/principles.md`:
 4. Surgical Changes — touch only what you must
 5. Goal-Driven Execution — define success criteria, loop until verified
 6. Commit to Decisions — pick the most likely explanation, proceed
-7. Anti-Loop Rule — same failure twice, stop and report
+7. Anti-Loop Guard — stop identical failed retries, not evidence-driven debugging
 
 ## Skill Shadowing
 

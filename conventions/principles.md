@@ -65,13 +65,14 @@ Strong success criteria enable independent execution. Weak criteria require cons
 - Uncertainty after investigation → escalate with evidence, not open-ended questions.
 - Indecision costs more than a slightly wrong choice followed by quick correction.
 
-## 7. Anti-Loop Rule
+## 7. Anti-Loop Guard
 
-**Same failure twice → stop and report.**
+**Stop bad-state repetition, not normal debugging.**
 
-- If the same action fails more than twice, STOP. Do not retry a third time.
-- Report the failure with full context: what you tried, what happened, what you expected.
-- Escalate to the operator or coordinator rather than looping indefinitely.
+- A loop is the same command/edit/tool call with materially same inputs producing the same failure, or cycling without new evidence.
+- After two identical failures, change tactic: gather context, inspect state, simplify, or ask.
+- Stop and report only after a third identical failure or when no new hypothesis remains.
+- Evidence-driven attempts with different hypotheses are allowed.
 
 ---
 
