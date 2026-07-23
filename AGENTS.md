@@ -107,10 +107,16 @@ For heavy, multi-phase, or risky tasks, use a structured execution pattern:
 
 1. **Gather context** — clone repos, download docs, explore codebase (Principle 1: Context First)
 2. **Create a persistent plan** — write it to a local file so it survives context limits and session restarts
-3. **Review before executing** — get the plan reviewed (by a review agent, peer, or careful self-review)
+3. **Review before executing** — get the plan reviewed by an independent review agent or peer with fresh context; self-review does not count
 4. **Execute in phases** — break work into verifiable phases with validation between each
 5. **Verify after each phase** — validate before proceeding to the next (Principle 5: Goal-Driven Execution)
 6. **Log completion** — record outcomes in wiki `log.md`
+
+Before committing or merging any non-trivial implementation, run the `code-review`
+loop: an independent fresh-context reviewer tries to refute correctness, classifies every
+finding as MUST-FIX / SHOULD-FIX / NIT, and routes all findings to the original author.
+Repeat author response and review until an explicit clean verdict; do not commit or merge
+before it.
 
 Each harness may provide tools for this pattern:
 - **OpenCode:** DeepWork (`/deepwork <task>`) — persistent plan files with mandatory Oracle review gates at plan and phase boundaries, V2 background orchestration. See `~/.config/opencode/AGENTS.md`.

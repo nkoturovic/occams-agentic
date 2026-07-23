@@ -1,97 +1,88 @@
 ---
 name: code-review
-description: Review code for bugs, security issues, and quality with confidence-based filtering. Use when user says "review this", "code review", "check for issues", "security audit", or after implementing a feature. Do not use for general architecture questions — that is a strategic advisory task, not a code review.
+description: Adversarial code-review loop; an independent fresh-context reviewer (sub-agent, second model, or human) tries to refute a change's correctness, classifies findings as MUST-FIX / SHOULD-FIX / NIT, all findings go back to the original author to address, and review repeats until an explicit clean verdict — only then commit or merge. Use when the user says "review this", "code review", "check this diff/PR/branch", when you or a sub-agent have just finished implementing a change, or before committing/merging any non-trivial work. Do not use for architecture or design consultation with no concrete diff to judge, nor for pure formatting/lint passes.
 ---
 
-# Code Review Skill
+# Code Review
 
-You are a code review specialist. Review code for bugs, security issues, performance problems, and maintainability concerns.
+Adversarial author/reviewer loop. The reviewer's job is to **refute** the change — hunt
+for reasons it is wrong — not to annotate style. The author's job is to answer every
+finding. Nothing merges before an explicit clean verdict. You may orchestrate the whole
+loop or sit in one seat; the invariants below hold either way.
 
-## Workflow
+## Roles
 
-### 1. Scope Detection
-- Identify what changed (git diff, or specific files)
-- Understand the context (what feature/fix this is for)
-- Note the language and framework
+- **Author** — whoever produced the change (often a sub-agent). Owns every fix; only the
+  author edits the code under review.
+- **Reviewer** — a fresh, independent context: spawn a sub-agent, use a second model, or
+  ask a human. Must not share the author's conversation state — anchoring on the
+  author's reasoning defeats the review.
 
-### 2. Review Categories (check each)
+## The loop
 
-**Bugs (Critical)**
-- Logic errors, off-by-one, null/undefined access
-- Race conditions, unhandled edge cases
-- Incorrect error handling
+For multi-round reviews, seed the rounds as todos and end with a re-orientation todo
+(re-orient, plan follow-up).
 
-**Security (Critical)**
-- Injection vulnerabilities (SQL, XSS, command)
-- Hardcoded secrets, credentials in code
-- Insecure defaults, missing auth checks
-- Data exposure in logs/errors
+1. **Pin the diff.** Establish exactly what is under review — uncommitted work
+   (`git diff`), last commit (`git diff HEAD~1`), or branch (`git diff <base>...HEAD`) —
+   plus the stated intent / acceptance criteria.
+2. **Spawn the reviewer** with the diff, the intent, and read access to the codebase for
+   surrounding context. Do not pass the author's reasoning or self-assessment.
+3. **Reviewer reviews adversarially** (attack surface and severity below) and ends the
+   round with an explicit verdict.
+4. **Route ALL findings back to the same author.** The reviewer never fixes code;
+   whoever orchestrates never fixes silently or drops a finding. The author answers each
+   one: fix it, or rebut it in writing.
+5. **Re-review.** Send the updated diff plus the author's rebuttals back to the reviewer
+   — same reviewer context where possible, so rebuttals are judged against the original
+   findings. New findings enter the same loop.
+6. **Iterate until the verdict is clean.** Only then commit/merge, following the
+   project's commit policy; no AI-attribution trailers.
 
-**Performance (High)**
-- N+1 queries, unbounded loops
-- Missing indexes, memory leaks
-- Unnecessary re-renders, blocking operations
+## Attack surface (reviewer)
 
-**Maintainability (Medium)**
-- Complex functions (>20 lines), deep nesting
-- Missing error handling, unclear naming
-- Duplicated code, tight coupling
+Try to construct a concrete failure, not a vague concern:
 
-**Style (Low)**
-- Inconsistent formatting, naming conventions
-- Missing comments on complex logic
+- **Correctness:** logic errors, off-by-one, null/None handling, unhandled edge cases
+  and error paths, races/ordering, wrong assumptions about inputs or state.
+- **Claims vs reality:** does the change do what the task or commit message says? Do the
+  tests exercise the new behavior, or only happy paths?
+- **Security:** injection, missing auth checks, secrets in code or logs, unsafe
+  defaults, data exposure.
+- **Performance:** N+1 access, unbounded loops or allocation, blocking calls on hot
+  paths.
+- **Maintainability:** duplication, misleading names, dead code — usually SHOULD-FIX or
+  NIT.
 
-### 3. Output Format
+Report only findings you can defend with evidence (`file:line` plus how it fails).
+Phrase genuine uncertainty as a question to the author instead of inflating severity.
 
-```markdown
-## Code Review: [file/feature]
+## Severity and verdict
 
-### 🔴 Critical (must fix)
-- [ ] Issue description
-  - Location: file:line
-  - Impact: what could go wrong
-  - Fix: suggested solution
+Classify every finding:
 
-### 🟡 High (should fix)
-- [ ] ...
+- **MUST-FIX** — correctness, security, or data-loss defects. Blocks approval.
+- **SHOULD-FIX** — real problems that won't break behavior now. Fix, or record
+  explicitly why deferred.
+- **NIT** — polish. Author's discretion; never blocks.
 
-### 🟢 Medium (consider)
-- [ ] ...
+Each finding: severity, `file:line`, what is wrong, the failure scenario, suggested
+direction. End every round with severity counts and exactly one verdict:
 
-### ℹ️ Low (nice to have)
-- [ ] ...
+- **REVISE** — any MUST-FIX remains, or a SHOULD-FIX is neither fixed nor explicitly
+  accepted.
+- **APPROVE** — no MUST-FIX; remaining SHOULD-FIX recorded as accepted; NITs optional.
 
-### Summary
-- Files reviewed: N
-- Issues found: X critical, Y high, Z medium
-- Overall quality: [poor/fair/good/excellent]
-```
+## Single-pass mode
 
-### 4. Confidence Levels
-- **High**: You're certain this is an issue
-- **Medium**: Likely an issue, but context-dependent
-- **Low**: Possible issue, worth investigating
+If the user explicitly asks for a "quick review", run steps 1–3 once, report MUST-FIX
+and SHOULD-FIX only, and state plainly it was a single pass without the fix/re-review
+loop.
 
-Only report Medium+ confidence issues unless explicitly asked for style review.
+## Composing with project conventions
 
-## Quick Review Mode
-When asked for a "quick review", focus only on:
-1. Critical bugs
-2. Security issues
-3. Obvious performance problems
-
-Skip maintainability and style concerns.
-
-## Review from Git Diff
-```bash
-# Review last commit
-git diff HEAD~1 HEAD
-
-# Review uncommitted changes
-git diff
-
-# Review a branch against main
-git diff main...feature-branch
-```
-
-Feed the diff into the review workflow above.
+Projects may define their own review rituals, gates, and verdict vocabularies in their
+project instructions or skills; by AGENTS.md precedence (project layer over framework
+layer), those win. Run this loop inside them and keep its invariants regardless:
+independent reviewer, all findings back to the author, re-review until clean, no
+commit/merge before a clean verdict.

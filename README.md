@@ -46,7 +46,7 @@ These tools must be on your PATH. No external API keys are required by default.
 ### Skills (6)
 | Skill | Description |
 |-------|-------------|
-| `code-review` | Systematic code review with confidence-based filtering |
+| `code-review` | Adversarial author/reviewer loop: an independent fresh-context reviewer tries to refute correctness; MUST-FIX / SHOULD-FIX / NIT findings return to the original author; review repeats until an explicit clean verdict, then commit/merge |
 | `pr-integration` | GitHub PR management via `gh` CLI |
 | `agent-browser` | Browser automation for AI agents |
 | `audio-analysis` | Speech-to-text via local whisper.cpp (Vulkan GPU) |
